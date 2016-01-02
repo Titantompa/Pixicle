@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest package="se.irl.pixicle"
+          xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- For fetching data from the web service and web site -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".PixiclePickerActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+        <provider
+            android:name=".PixicleContentProvider"
+            android:authorities="se.irl.Pixicle.PixicleContentProvider"
+            android:enabled="true"
+            android:exported="false">
+        </provider>
+
+        <activity android:name=".PixiclePropertiesActivity">
+        </activity>
+        <activity
+            android:name=".PixicleConfigActivity"
+            android:label="@string/title_activity_pixicle_config"
+            android:parentActivityName=".PixiclePickerActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="se.irl.pixicle.PixiclePickerActivity"/>
+        </activity>
+    </application>
+
+</manifest>

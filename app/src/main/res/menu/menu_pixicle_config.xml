@@ -1,0 +1,15 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context="se.irl.pixicle.PixicleConfigActivity">
+    <item
+        android:id="@+id/turn_off_pixicle"
+        android:orderInCategory="100"
+        android:title="@string/turn_off_pixicle"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/send_pixicle_hwconfig"
+        android:orderInCategory="100"
+        android:title="@string/send_pixicle_hwconfig"
+        app:showAsAction="never"/>
+</menu>

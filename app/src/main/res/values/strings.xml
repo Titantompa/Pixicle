@@ -1,0 +1,47 @@
+<resources>
+    <string name="app_name">Pixicle</string>
+    <string name="large_text">
+        "Material is the metaphor.\n\n"
+
+        "A material metaphor is the unifying theory of a rationalized space and a system of motion."
+        "The material is grounded in tactile reality, inspired by the study of paper and ink, yet "
+        "On the layout level, design your app layout to minimize opportunities for interference. "
+        "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
+        "when a user tries to pick up one of cards.\n\n"
+    </string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_register_pixicle">Register Pixicle</string>
+    <string name="props_device_id">Device Id:</string>
+    <string name="props_number_of_leds">Number of LEDs:</string>
+    <string name="props_software_version">Pixicle software version:</string>
+    <string name="action_add_pixicle">Add a Pixicle</string>
+    <string name="props_save">Save</string>
+    <string name="props_create">Create</string>
+    <string name="props_device_name">Name</string>
+
+    <string-array name="props_software_versions_array">
+        <item>Aardvark</item>
+        <item>Bobcat</item>
+        <item>Chipmunk</item>
+    </string-array>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_pixicle_config">PixicleConfigActivity</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="turn_off_pixicle">Turn off Pixicle</string>
+
+    <string name="dash_color">Dash color:</string>
+    <string name="from_color">From color:</string>
+    <string name="to_color">To color:</string>
+    <string name="completion_percentage">Percentage completion:</string>
+    <string name="send_pixicle_hwconfig">Send HW Config</string>
+    <string name="props_access_token">Access Token</string>
+    <string name="config_string">Config string:</string>
+    <string name="dash_pixel_length">Dash length in pixels:</string>
+    <string name="speed">Speed:</string>
+    <string name="flickering">Flickering</string>
+    <string name="projectile_color">Projectile color</string>
+    <string name="color">Color:</string>
+    <string name="number_of_twinkles">Number of twinkles (max 100):</string>
+    <string name="duration">Duration (in milliseconds):</string>
+    <string name="twinkle_color">Twinkle color:</string>
+</resources>
