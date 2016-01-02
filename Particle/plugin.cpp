@@ -243,6 +243,8 @@ void DashPlugin::Iterate(float deltaTime /* millis */)
 // JUGGLEPLUGIN
 //
 
+#define MAX_DURATION 2222
+
 JugglePlugin::JugglePlugin(NeoPixelStrip * strip, String & parameters)
 :Plugin(strip)
 {
@@ -275,7 +277,7 @@ void JugglePlugin::Iterate(float deltaTime /* millis */)
         if(currentTime - _intervalStart > _interval)
         {
             // Create a new projectile!
-            _currentDuration = (float) random(666,3000);
+            _currentDuration = (float) random(MAX_DURATION/3, MAX_DURATION);
             _currentStartMillis = currentTime-1; // To prevent div by zero
             _intervalStart = -1.0;
         }
@@ -285,14 +287,18 @@ void JugglePlugin::Iterate(float deltaTime /* millis */)
         }
     }
 
-    // Move current projectile
     float elapsed = currentTime - _currentStartMillis;
 
-    float progress = elapsed / _currentDuration;
+    // Calculate height of projectile
+    float radius = _currentDuration/2;
+    float adjacent = radius-elapsed;
 
-    float radians = progress * PI;
-
-    int height = (sin(radians)*(_currentDuration/3000)*Strip->Length);
+    int height = -1.0;
+    if(elapsed <= _currentDuration)
+    {
+      float elevation = sqrt((radius*radius)-(adjacent*adjacent))/radius;
+      height = (elevation*(_currentDuration/MAX_DURATION)*Strip->Length);
+    }
 
     uint32_t black = Adafruit_NeoPixel::Color(0, 0, 0);
     uint32_t color = _color;
