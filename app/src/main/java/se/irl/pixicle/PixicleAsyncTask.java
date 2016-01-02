@@ -13,6 +13,7 @@ public class PixicleAsyncTask extends AsyncTask<String, Void, Boolean> {
 
     public static String FUNCTION_APPLY_CONFIG = "ApplyConfig";
     public static String FUNCTION_SET_PIXEL_COUNT = "SetPixelCnt";
+    public static String FUNCTION_SCHEDULE_CONFIG = "ScheduleCfg";
 
     /***
      * Parameters are [access_token],[device_id],[cloud_function],[arguments]

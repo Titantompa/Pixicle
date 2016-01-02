@@ -40,6 +40,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="se.irl.pixicle.PixiclePickerActivity"/>
         </activity>
+        <activity
+            android:name=".ScheduleConfigurationActivity"
+            android:label="@string/title_activity_schedule_configuration"
+            android:parentActivityName=".PixicleConfigActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="se.irl.pixicle.PixicleConfigActivity"/>
+        </activity>
     </application>
 
 </manifest>

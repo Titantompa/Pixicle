@@ -34,7 +34,7 @@ public class PixiclePropertiesActivity extends AppCompatActivity implements Load
         setContentView(R.layout.activity_pixicle_properties);
 
         Intent intent = getIntent();
-        mPixicleId = intent.getIntExtra(Constants.ARG_DEVICE_IDENTITY, -1);
+        mPixicleId = intent.getIntExtra(Constants.ARG_PIXICLE_IDENTITY, -1);
 
         addItemsToSpinner();
         setButtonText();

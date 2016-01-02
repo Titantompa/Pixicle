@@ -16,13 +16,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-
-import android.widget.TextView;
 
 public class PixicleConfigActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -56,7 +52,7 @@ public class PixicleConfigActivity extends AppCompatActivity implements LoaderMa
         super.onCreate(savedInstanceState);
 
         Intent intent = getIntent();
-        mPixicleId = intent.getIntExtra(Constants.ARG_DEVICE_IDENTITY, -1);
+        mPixicleId = intent.getIntExtra(Constants.ARG_PIXICLE_IDENTITY, -1);
 
         setContentView(R.layout.activity_pixicle_config);
 
@@ -110,6 +106,21 @@ public class PixicleConfigActivity extends AppCompatActivity implements LoaderMa
             case R.id.send_pixicle_hwconfig:
                 // Send the off command to the Pixicle
                 new PixicleAsyncTask().execute(mAccessToken, mDeviceIdentifier, PixicleAsyncTask.FUNCTION_SET_PIXEL_COUNT, new Integer(mNumberOfPixels).toString());
+                return true;
+
+            case R.id.schedule_configuration:
+
+                int pos = mViewPager.getCurrentItem();
+                SectionsPagerAdapter pagerAdapter = (SectionsPagerAdapter) mViewPager.getAdapter();
+                PixicleConfigFragmentBase configFragment = (PixicleConfigFragmentBase) pagerAdapter.getItem(pos);
+                String configuration = configFragment.getPixicleConfigArgs();
+
+                Intent intent = new Intent(getApplicationContext(), ScheduleConfigurationActivity.class);
+                intent.putExtra(Constants.ARG_PIXICLE_IDENTITY, mPixicleId);
+                intent.putExtra(Constants.ARG_DEVICE_IDENTITY, mDeviceIdentifier);
+                intent.putExtra(Constants.ARG_ACCESS_TOKEN, mAccessToken);
+                intent.putExtra(Constants.ARG_CONFIGURATION, configuration);
+                startActivity(intent);
                 return true;
         }
 

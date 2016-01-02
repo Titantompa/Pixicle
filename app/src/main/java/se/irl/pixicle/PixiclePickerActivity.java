@@ -35,7 +35,7 @@ public class PixiclePickerActivity extends AppCompatActivity implements LoaderMa
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), PixiclePropertiesActivity.class);
-                intent.putExtra(Constants.ARG_DEVICE_IDENTITY, -1);
+                intent.putExtra(Constants.ARG_PIXICLE_IDENTITY, -1);
                 startActivity(intent);
             }
         });
@@ -46,7 +46,7 @@ public class PixiclePickerActivity extends AppCompatActivity implements LoaderMa
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getApplicationContext(), PixicleConfigActivity.class);
-                intent.putExtra(Constants.ARG_DEVICE_IDENTITY, (int) id);
+                intent.putExtra(Constants.ARG_PIXICLE_IDENTITY, (int) id);
                 startActivity(intent);
             }
         });
@@ -54,7 +54,7 @@ public class PixiclePickerActivity extends AppCompatActivity implements LoaderMa
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getApplicationContext(), PixiclePropertiesActivity.class);
-                intent.putExtra(Constants.ARG_DEVICE_IDENTITY, (int) id);
+                intent.putExtra(Constants.ARG_PIXICLE_IDENTITY, (int) id);
                 startActivity(intent);
                 return true;
             }
@@ -89,7 +89,7 @@ public class PixiclePickerActivity extends AppCompatActivity implements LoaderMa
         {
             case R.id.action_new_pixicle:
                 Intent intent = new Intent(this, PixiclePropertiesActivity.class);
-                intent.putExtra(Constants.ARG_DEVICE_IDENTITY, -1);
+                intent.putExtra(Constants.ARG_PIXICLE_IDENTITY, -1);
                 startActivity(intent);
                 return true;
             case R.id.action_settings:

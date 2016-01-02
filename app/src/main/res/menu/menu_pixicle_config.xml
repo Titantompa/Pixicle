@@ -8,8 +8,15 @@
         android:title="@string/turn_off_pixicle"
         app:showAsAction="never"/>
     <item
-        android:id="@+id/send_pixicle_hwconfig"
+        android:id="@+id/schedule_configuration"
         android:orderInCategory="100"
-        android:title="@string/send_pixicle_hwconfig"
+        android:title="Schedule configuration..."
         app:showAsAction="never"/>
+    <group>
+        <item
+            android:id="@+id/send_pixicle_hwconfig"
+            android:orderInCategory="100"
+            android:title="@string/send_pixicle_hwconfig"
+            app:showAsAction="never"/>
+    </group>
 </menu>
