@@ -31,7 +31,6 @@ int LoopCnt = 0;
 
 unsigned long LastMicros = 0;
 
-// TODO: This is different between the CORE and PHOTON
 #if PLATFORM_ID == 0 // Core (0)
 #define MICROS_ROLLOVER ((unsigned long)59652323)
 #elif (PLATFORM_ID == 6) // Photon (6)
@@ -64,7 +63,6 @@ int ApplyConfig(String config)
 
     UpdateConfigInfo(config);
 
-    // TODO: Store in EEPROM
     char buffer[90];
     CurrentConfig->toCharArray(buffer, 90);
     EEPROM.put(EEPROM_CONFIG_INDEX, buffer);
