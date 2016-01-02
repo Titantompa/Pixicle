@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-dark.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <title>Pixicle by Titantompa</title>
+  </head>
+
+  <body>
+    <div id="container">
+      <div class="inner">
+
+        <header>
+          <h1>Pixicle</h1>
+          <h2></h2>
+        </header>
+
+        <section id="downloads" class="clearfix">
+          <a href="https://github.com/Titantompa/Pixicle/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
+          <a href="https://github.com/Titantompa/Pixicle/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
+          <a href="https://github.com/Titantompa/Pixicle" id="view-on-github" class="button"><span>View on GitHub</span></a>
+        </section>
+
+        <hr>
+
+        <section id="main_content">
+          <h3>
+<a id="what-is-pixicle" class="anchor" href="#what-is-pixicle" aria-hidden="true"><span class="octicon octicon-link"></span></a>What is Pixicle</h3>
+
+<p>Pixicle is a concept based on the WiFi enabled devices of <a href="http://www.particle.io">Particle Industries</a> in combination with a strip of programmable LEDs (e g WS2811 and derivatives), commonly referred to as NeoPixels (a brand used by <a href="https://www.adafruit.com/">Adafruit</a> for their programmable LED strips).</p>
+
+<p>A Pixicle is in essence a cloud-connected microcontroller driving a strip of LEDs. The firmware is an extendable framework addressable through a generic and cloud-based interface. The applications range from simple ambient mood lightning (controller by the accompanying Android application) to more elaborate IoT-configurations where the lights could be used to indicate events, progress or various metrics.</p>
+
+<h3>
+<a id="what-do-you-need" class="anchor" href="#what-do-you-need" aria-hidden="true"><span class="octicon octicon-link"></span></a>What do you need</h3>
+
+<p>In order to build a Pixicle you need five major components:</p>
+
+<ul>
+<li><p><strong>A Particle device</strong> (Core or Photon).<br>
+  Available from multiple sources, world-wide. For prototyping purposes a Photon kit (with breadboard) is recommended.</p></li>
+<li><p><strong>A LED Strip</strong> (e g WS2812B et al).<br>
+  Also available in vast variations from more or less reputable world-wide distributors.</p></li>
+<li><p><strong>A logic level converter</strong><br>
+  The microcontroller uses 3.3V logic while the LEDs use 5V. This could be a custom converter (built on a fast 74125 logic chip or an optocoupler if isolation is needed) or a product such as <a href="Sparkfun's">http://www.sparkfun.com</a>'s <a href="https://www.sparkfun.com/products/12009">Logic Level Converter</a>.</p></li>
+<li><p><strong>A Power Supply</strong><br>
+   While the microcontroller doesn't require much, each of the LEDs could peak at 0.3W. This quickly sums up to boggling levels of current.<br>
+   The Particle devices feature an on-board regulator which makes it possible to drive both the microcontroller and LED-strip from the same 5 Volt power supply. Note that the LED-strips themselves are measly conductors and that you'd probably want to connect the power supply at more than one place if the strip exceeds about five metres.</p></li>
+</ul>
+
+<p>Apart from these requisites you would also need some form of fixture to mount the components to, obviously.</p>
+
+<h3>
+<a id="required-skills" class="anchor" href="#required-skills" aria-hidden="true"><span class="octicon octicon-link"></span></a>Required skills</h3>
+
+<p>Even though you'd get very far with a breadboard you will most likely need a soldering iron and some rudimentary skills to get all the connectors and wires to hook up properly.</p>
+
+<p>If you want to add modes and functionality to either the microcontroller or the Android application you need programming skills. The microntroller is programmed using C++ while the Android application is Java.</p>
+
+<p>To produce something beyond a prototype (even if it is just a one-off device) you will also need some mechanical and general fiddling skills (along with appropriate tools).</p>
+
+<h3>
+<a id="required-software-tools" class="anchor" href="#required-software-tools" aria-hidden="true"><span class="octicon octicon-link"></span></a>Required Software Tools</h3>
+
+<p>The Android app is build using the <a href="https://developer.android.com/sdk/index.html">Android Studio</a> while the firmware for the Particle devices is built using <a href="https://www.particle.io/dev">Particle Dev</a>.</p>
+
+<h3>
+<a id="authors-and-contributors" class="anchor" href="#authors-and-contributors" aria-hidden="true"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
+
+<p>The Android app and Particle firmware was originally written by Tomas Hübner (<a href="https://github.com/titantompa" class="user-mention">@titantompa</a>). The work started during the Christmas holidays 2014 and was completed during the same holidays a year later (2015).
+The Android app uses a color picker written by <a href="https://github.com/LarsWerkman" class="user-mention">@LarsWerkman</a> and the firmware uses a library to communicate with the NeoPixels adapted to the Particle devices by <a href="https://github.com/technobly" class="user-mention">@technobly</a>.</p>
+
+<h3>
+<a id="useful-links" class="anchor" href="#useful-links" aria-hidden="true"><span class="octicon octicon-link"></span></a>Useful Links</h3>
+
+<p><a href="http://www.particle.io">http://www.particle.io</a><br>
+<a href="http://www.particle.io/dev">http://www.particle.io/dev</a><br>
+<a href="https://learn.adafruit.com/adafruit-neopixel-uberguide">https://learn.adafruit.com/adafruit-neopixel-uberguide</a><br>
+<a href="https://ifttt.com/maker">https://ifttt.com/maker</a><br>
+<a href="http://www.newark.com/pdfs/techarticles/microchip/3_3vto5vAnalogTipsnTricksBrchr.pdf">http://www.newark.com/pdfs/techarticles/microchip/3_3vto5vAnalogTipsnTricksBrchr.pdf</a>    </p>
+        </section>
+
+        <footer>
+          Pixicle is maintained by <a href="https://github.com/Titantompa">Titantompa</a><br>
+          This page was generated by <a href="https://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
+        </footer>
+
+        
+      </div>
+    </div>
+  </body>
+</html>
