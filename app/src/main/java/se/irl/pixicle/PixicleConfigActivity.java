@@ -217,21 +217,21 @@ public class PixicleConfigActivity extends AppCompatActivity implements LoaderMa
             switch(position)
             {
                 case 0:
-                    return mDashFragment == null ? mDashFragment = DashFragment.newInstance() : mDashFragment;
-                case 1:
                     return mJuggleFragment == null ? mJuggleFragment = JuggleFragment.newInstance() : mJuggleFragment;
-                case 2:
-                    return mProgressFragment == null ? mProgressFragment = ProgressFragment.newInstance() : mProgressFragment;
-                case 3:
-                    return mRainbowFragment == null ? mRainbowFragment =  RainbowFragment.newInstance() : mRainbowFragment;
-                case 4:
-                    return mSolidFragment == null ? mSolidFragment = SolidFragment.newInstance() : mSolidFragment;
-                case 5:
-                    return mTwinkleFragment == null ? mTwinkleFragment =  TwinkleFragment.newInstance(): mTwinkleFragment;
-                case 6:
-                    return mCustomFragment == null ? mCustomFragment = CustomFragment.newInstance() : mCustomFragment;
-                case 7:
+                case 1:
                     return mFireFragment == null ? mFireFragment = FireFragment.newInstance() : mFireFragment;
+                case 2:
+                    return mTwinkleFragment == null ? mTwinkleFragment =  TwinkleFragment.newInstance(): mTwinkleFragment;
+                case 3:
+                    return mProgressFragment == null ? mProgressFragment = ProgressFragment.newInstance() : mProgressFragment;
+                case 4:
+                    return mRainbowFragment == null ? mRainbowFragment =  RainbowFragment.newInstance() : mRainbowFragment;
+                case 5:
+                    return mDashFragment == null ? mDashFragment = DashFragment.newInstance() : mDashFragment;
+                case 6:
+                    return mSolidFragment == null ? mSolidFragment = SolidFragment.newInstance() : mSolidFragment;
+                case 7:
+                    return mCustomFragment == null ? mCustomFragment = CustomFragment.newInstance() : mCustomFragment;
             }
 
             return null;
@@ -244,21 +244,21 @@ public class PixicleConfigActivity extends AppCompatActivity implements LoaderMa
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "Dash";
-                case 1:
                     return "Juggle";
-                case 2:
-                    return "Progress";
-                case 3:
-                    return "Rainbow";
-                case 4:
-                    return "Solid";
-                case 5:
-                    return "Twinkle";
-                case 6:
-                    return "Custom";
-                case 7:
+                case 1:
                     return "Fire";
+                case 2:
+                    return "Twinkle";
+                case 3:
+                    return "Progress";
+                case 4:
+                    return "Rainbow";
+                case 5:
+                    return "Dash";
+                case 6:
+                    return "Solid";
+                case 7:
+                    return "Custom";
             }
             return null;
         }
