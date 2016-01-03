@@ -33,6 +33,11 @@ Plugin * PluginFactory::CreatePlugin(String & config, NeoPixelStrip * strip)
         String parameters(config.substring(8));
         return new TwinklePlugin(strip, parameters);
     }
+    else if(config.startsWith("Fire"))
+    {
+        String parameters(config.substring(5));
+        return new FirePlugin(strip, parameters);
+    }
     else if(config.startsWith("Off"))
     {
         return new OffPlugin(strip);

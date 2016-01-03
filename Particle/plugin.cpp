@@ -1,7 +1,8 @@
 #include "plugin.h"
 #include "math.h"
 
-#define PI 3.1415926535897932384626433832795
+#define PI      3.1415926535897932384626433832795
+#define HALF_PI 1.5707963267948966192313216916398
 
 /////////////////////////////////////
 // PLUGIN
@@ -341,4 +342,68 @@ void JugglePlugin::Iterate(float deltaTime /* millis */)
     }
 
     Strip->Show();
+}
+
+/////////////////////////////////////
+// FIREPLUGIN
+//
+
+FirePlugin::FirePlugin(NeoPixelStrip * strip, String & parameters)
+:Plugin(strip)
+{
+    SetParameters(parameters);
+    _flames = new uint8_t[Strip->Length];
+    memset(_flames, 0, Strip->Length);
+
+    for(int i = 0; i < 256; i++)
+    {
+        float red = i;// sqrt(pow(256.0f,2.0f)-pow(256.0f-(float)i,2.0f));
+        float green = (cos(((float)i*PI/255.0f)+PI)+1.0f)/2 * 255.0f;
+        float blue = (tan((float)i*1.48f/255.0f)/11.0f) * 255.0f;
+        _palette[i] = Adafruit_NeoPixel::Color((int)red, (int)green, (int)blue);
+    }
+}
+
+FirePlugin::~FirePlugin()
+{
+  delete _flames;
+}
+
+void FirePlugin::SetParameters(String & parameters)
+{
+    _combustion = parameters.toInt();
+
+    int i = parameters.indexOf(',', 0);
+    _dissipation = parameters.substring(i+1).toInt();
+}
+
+void FirePlugin::Iterate(float deltaTime /* millis */)
+{
+  // Dissipate heat away from the flame
+  for(int i = 0; i < Strip->Length; i++)
+  {
+    int heat = (int)_flames[i] - random(0, ((_dissipation*10)/Strip->Length)+3);
+    _flames[i] = heat < 0 ? 0 : heat;
+  }
+
+  // Move flame upwards
+  for(int i = Strip->Length-1; i > 0; i--)
+  {
+    _flames[i] = ((int)_flames[i - 1] + ((int)_flames[i - 2]*2)) / 3;
+  }
+
+  // Burn more at bottom
+  if(random(0,255) < _combustion)
+  {
+    int height = random(0,Strip->Length/8);
+    int heat = (int)_flames[height] + random(130,255);
+    _flames[height] = (heat > 255) ? 255 : heat;
+  }
+
+  for(int i = 0; i < Strip->Length; i++)
+    Strip->SetPixelColor(i, _palette[_flames[i]]);
+
+  Strip->Show();
+
+  delay(33);
 }

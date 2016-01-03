@@ -21,6 +21,28 @@ class Plugin
 // SPECIALIZATIONS
 //
 
+class FirePlugin : public Plugin
+{
+    private:
+        uint32_t _dissipation;
+        uint32_t _combustion;
+
+        uint8_t * _flames;
+
+        uint32_t _palette[256];
+
+    public:
+        FirePlugin(NeoPixelStrip * strip, String & parameters);
+        ~FirePlugin();
+
+        virtual void Iterate(float deltaTime /* millis */);
+
+        // parameters: "<combustion>,<dissipation>"
+        // combustion = 0-255 amount of new sparks
+        // dissipation = 0-255 amount of dissipation
+        virtual void SetParameters(String & parameters);
+};
+
 class DashPlugin : public Plugin
 {
     private:

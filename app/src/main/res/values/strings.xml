@@ -45,10 +45,14 @@
     <string name="duration">Duration (in milliseconds):</string>
     <string name="twinkle_color">Twinkle color:</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="delay">Delay</string>
     <string name="schedule_time">Schedule time:</string>
     <string name="scheduled_configuration">Scheduled configuration</string>
     <string name="title_activity_schedule_configuration">Schedule Configuration</string>
+    <string name="props_delete">Delete</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="combustion">Combustion (0-255):</string>
+    <string name="dissipation">Dissipation (0-255)</string>
 </resources>

@@ -4,10 +4,12 @@ import android.app.LoaderManager;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.CursorLoader;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -67,6 +69,33 @@ public class PixiclePropertiesActivity extends AppCompatActivity implements Load
         spinner.setAdapter(adapter);
     }
 
+    public void onDeleteButton(View view)
+    {
+        if(mPixicleId != -1) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+            builder = builder.setTitle("Delete Pixicle");
+            builder = builder.setMessage("Are you sure you want to remove the configuration of the current Pixicle?");
+            builder = builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    if (mContentResolver == null)
+                        mContentResolver = getContentResolver();
+
+                    mContentResolver.delete(Uri.withAppendedPath(PixicleContentProvider.PIXICLE_URI, Integer.toString(mPixicleId)), null, null);
+
+                    finish();
+                }
+            });
+            builder = builder.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                }
+            });
+            builder = builder.setIcon(android.R.drawable.ic_dialog_alert);
+            builder.show();
+        }
+
+    }
+
     public void onSaveButton(View view) {
 
         if(mContentResolver == null)
@@ -99,7 +128,7 @@ public class PixiclePropertiesActivity extends AppCompatActivity implements Load
             if(result != null)
                 mPixicleId = Integer.parseInt(result.getLastPathSegment());
         } else {
-            mContentResolver.update(Uri.withAppendedPath(PixicleContentProvider.PIXICLE_URI, new Integer(mPixicleId).toString()), values, null, null);
+            mContentResolver.update(Uri.withAppendedPath(PixicleContentProvider.PIXICLE_URI, Integer.toString(mPixicleId)), values, null, null);
         }
 
         finish();
@@ -114,17 +143,15 @@ public class PixiclePropertiesActivity extends AppCompatActivity implements Load
         switch(id) {
             case LOADER_ID:
 
-                Uri uri = Uri.withAppendedPath(PixicleContentProvider.PIXICLE_URI, new Integer(mPixicleId).toString());
+                Uri uri = Uri.withAppendedPath(PixicleContentProvider.PIXICLE_URI, Integer.toString(mPixicleId));
 
-                CursorLoader loader = new CursorLoader(
+                return new CursorLoader(
                         this,
                         uri,
                         null, // projection
                         null, // selection
                         null, // selectionArgs
                         null);
-
-                return loader;
         }
 
         return null;
@@ -134,6 +161,9 @@ public class PixiclePropertiesActivity extends AppCompatActivity implements Load
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 
         data.moveToFirst();
+
+        if(data.isAfterLast())
+            return;
 
         // Fill values into the columns
         EditText name = (EditText) findViewById(R.id.device_name);
@@ -155,7 +185,7 @@ public class PixiclePropertiesActivity extends AppCompatActivity implements Load
             if(!data.isNull(accessTokenColumn))
                 accessToken.setText(data.getString(accessTokenColumn));
             numberOfNeoPixels.setText(data.getString(numberOfNeoPixelsColumn));
-        }catch(Exception e)
+        } catch(Exception e)
         {
             Log.wtf("PixiclePropertiesActivity", e);
             // TODO: This would probably be better if it shows an error message?

@@ -64,8 +64,6 @@
             android:layout_height="wrap_content"
             android:digits="1234567890ABCDEFabcdef"/>
 
-        <!-- TODO: arrangement -->
-
         <!-- software version -->
         <TextView
             android:layout_width="wrap_content"
@@ -80,14 +78,26 @@
 
         <!-- TODO: add some space... -->
 
-        <Button
-            android:id="@+id/save_button"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:text="@string/props_save"
-            android:onClick="onSaveButton"
-            android:layout_gravity="bottom|right"
-            />
-
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/delete_button"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="@string/props_delete"
+                android:onClick="onDeleteButton"
+                android:layout_alignParentLeft="true"
+                />
+            <Button
+                android:id="@+id/save_button"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="@string/props_save"
+                android:onClick="onSaveButton"
+                android:layout_alignParentRight="true"
+                />
+        </RelativeLayout>
     </LinearLayout>
 </RelativeLayout>

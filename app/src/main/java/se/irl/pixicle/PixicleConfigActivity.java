@@ -105,7 +105,7 @@ public class PixicleConfigActivity extends AppCompatActivity implements LoaderMa
 
             case R.id.send_pixicle_hwconfig:
                 // Send the off command to the Pixicle
-                new PixicleAsyncTask().execute(mAccessToken, mDeviceIdentifier, PixicleAsyncTask.FUNCTION_SET_PIXEL_COUNT, new Integer(mNumberOfPixels).toString());
+                new PixicleAsyncTask().execute(mAccessToken, mDeviceIdentifier, PixicleAsyncTask.FUNCTION_SET_PIXEL_COUNT, Integer.toString(mNumberOfPixels));
                 return true;
 
             case R.id.schedule_configuration:
@@ -135,17 +135,15 @@ public class PixicleConfigActivity extends AppCompatActivity implements LoaderMa
         switch(id) {
             case LOADER_ID:
 
-                Uri uri = Uri.withAppendedPath(PixicleContentProvider.PIXICLE_URI, new Integer(mPixicleId).toString());
+                Uri uri = Uri.withAppendedPath(PixicleContentProvider.PIXICLE_URI, Integer.toString(mPixicleId));
 
-                CursorLoader loader = new CursorLoader(
+                return new CursorLoader(
                         this,
                         uri,
                         null, // projection
                         null, // selection
                         null, // selectionArgs
                         null);
-
-                return loader;
         }
 
         return null;
@@ -206,6 +204,7 @@ public class PixicleConfigActivity extends AppCompatActivity implements LoaderMa
         private SolidFragment mSolidFragment = null;
         private TwinkleFragment mTwinkleFragment = null;
         private CustomFragment mCustomFragment = null;
+        private FireFragment mFireFragment = null;
 
         public SectionsPagerAdapter(FragmentManager fm, int softwareVersion)
         {
@@ -231,13 +230,15 @@ public class PixicleConfigActivity extends AppCompatActivity implements LoaderMa
                     return mTwinkleFragment == null ? mTwinkleFragment =  TwinkleFragment.newInstance(): mTwinkleFragment;
                 case 6:
                     return mCustomFragment == null ? mCustomFragment = CustomFragment.newInstance() : mCustomFragment;
+                case 7:
+                    return mFireFragment == null ? mFireFragment = FireFragment.newInstance() : mFireFragment;
             }
 
             return null;
         }
 
         @Override
-        public int getCount() { return 7; }
+        public int getCount() { return 8; }
 
         @Override
         public CharSequence getPageTitle(int position) {
@@ -256,6 +257,8 @@ public class PixicleConfigActivity extends AppCompatActivity implements LoaderMa
                     return "Twinkle";
                 case 6:
                     return "Custom";
+                case 7:
+                    return "Fire";
             }
             return null;
         }

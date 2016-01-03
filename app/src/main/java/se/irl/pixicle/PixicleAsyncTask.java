@@ -16,9 +16,8 @@ public class PixicleAsyncTask extends AsyncTask<String, Void, Boolean> {
     public static String FUNCTION_SCHEDULE_CONFIG = "ScheduleCfg";
 
     /***
-     * Parameters are [access_token],[device_id],[cloud_function],[arguments]
-     * @param params
-     * @return
+     * @param params Parameters are, in order: [access_token],[device_id],[cloud_function],[arguments]
+     * @return true if successful, false otherwise
      */
     @Override
     protected Boolean doInBackground(String... params) {
