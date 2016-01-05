@@ -175,7 +175,7 @@ void ProgressPlugin::Iterate(float deltaTime /* millis */)
 
     for(int i = 0; i < Strip->Length; i++)
     {
-        Strip->SetPixelColor(i, i <= progress ? _toColor : _fromColor);
+        Strip->SetPixelColor(i, i < progress ? _toColor : _fromColor);
     }
 
     Strip->Show();
@@ -357,10 +357,14 @@ FirePlugin::FirePlugin(NeoPixelStrip * strip, String & parameters)
 
     for(int i = 0; i < 256; i++)
     {
-        float red = i;// sqrt(pow(256.0f,2.0f)-pow(256.0f-(float)i,2.0f));
+        float red = (sqrt(pow(256.0f,2.0f)-pow(256.0f-(float)i,2.0f)));
         float green = (cos(((float)i*PI/255.0f)+PI)+1.0f)/2 * 255.0f;
-        float blue = (tan((float)i*1.48f/255.0f)/11.0f) * 255.0f;
+        float blue = (tan((float)i*1.53f/255.0f)/25.0f) * 255.0f;
+#if 0
+        _palette[i] = Adafruit_NeoPixel::Color((int)green, (int)blue, (int)red);
+#else
         _palette[i] = Adafruit_NeoPixel::Color((int)red, (int)green, (int)blue);
+#endif
     }
 }
 
