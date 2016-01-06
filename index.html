@@ -36,7 +36,7 @@
 
 <p>Pixicle is a concept based on the WiFi enabled devices of <a href="http://www.particle.io">Particle Industries</a> in combination with a strip of programmable LEDs (e g WS2811 and derivatives), commonly referred to as NeoPixels (a brand used by <a href="https://www.adafruit.com/">Adafruit</a> for their programmable LED strips).</p>
 
-<p>A Pixicle is in essence a cloud-connected microcontroller driving a strip of LEDs. The firmware is an extendable framework addressable through a generic and cloud-based interface. The applications range from simple ambient mood lightning (controller by the accompanying Android application) to more elaborate IoT-configurations where the lights could be used to indicate events, progress or various metrics.</p>
+<p>A Pixicle is in essence a cloud-connected microcontroller driving a strip of LEDs. It has a set of modes which light up the LED strip in different patterns, and the mode is programmed through the Particle cloud using simple and generic HTTP POST requests. The firmware is an extendable framework allowing for easy extension with additional modes. The applications range from simple ambient mood lightning (controller by the accompanying Android application) to more elaborate IoT-configurations where the lights could be used to indicate events, progress or various metrics.</p>
 
 <h3>
 <a id="what-do-you-need" class="anchor" href="#what-do-you-need" aria-hidden="true"><span class="octicon octicon-link"></span></a>What do you need</h3>
@@ -49,7 +49,7 @@
 <li><p><strong>A LED Strip</strong> (e g WS2812B et al).<br>
   Also available in vast variations from more or less reputable world-wide distributors.</p></li>
 <li><p><strong>A logic level converter</strong><br>
-  The microcontroller uses 3.3V logic while the LEDs use 5V. This could be a custom converter (built on a fast 74125 logic chip or an optocoupler if isolation is needed) or a product such as <a href="Sparkfun's">http://www.sparkfun.com</a>'s <a href="https://www.sparkfun.com/products/12009">Logic Level Converter</a>.</p></li>
+  The microcontroller uses 3.3V logic while the LEDs use 5V. This could be a custom converter (built on a fast 74125 logic chip or an optocoupler if isolation is needed) or a product such as <a href="Sparkfun's">http://www.sparkfun.com</a>'s <a href="https://www.sparkfun.com/products/12009">Logic Level Converter</a> (which is recommended because it makes things simpler).</p></li>
 <li><p><strong>A Power Supply</strong><br>
    While the microcontroller doesn't require much, each of the LEDs could peak at 0.3W. This quickly sums up to boggling levels of current.<br>
    The Particle devices feature an on-board regulator which makes it possible to drive both the microcontroller and LED-strip from the same 5 Volt power supply. Note that the LED-strips themselves are measly conductors and that you'd probably want to connect the power supply at more than one place if the strip exceeds about five metres.</p></li>
@@ -69,7 +69,7 @@
 <h3>
 <a id="required-software-tools" class="anchor" href="#required-software-tools" aria-hidden="true"><span class="octicon octicon-link"></span></a>Required Software Tools</h3>
 
-<p>The Android app is built using the <a href="https://developer.android.com/sdk/index.html">Android Studio</a> while the firmware for the Particle devices is built using <a href="https://www.particle.io/dev">Particle Dev</a>.</p>
+<p>The Android app is build using the <a href="https://developer.android.com/sdk/index.html">Android Studio</a> while the firmware for the Particle devices is built using <a href="https://www.particle.io/dev">Particle Dev</a>.</p>
 
 <h3>
 <a id="authors-and-contributors" class="anchor" href="#authors-and-contributors" aria-hidden="true"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
