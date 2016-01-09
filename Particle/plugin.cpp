@@ -271,7 +271,7 @@ void JugglePlugin::SetParameters(String & parameters)
 
 void JugglePlugin::Iterate(float deltaTime /* millis */)
 {
-    float currentTime = ((float)micros())/1000;
+    float currentTime = millis();
 
     if(_intervalStart > 0.0)
     {
@@ -352,18 +352,28 @@ FirePlugin::FirePlugin(NeoPixelStrip * strip, String & parameters)
 :Plugin(strip)
 {
     SetParameters(parameters);
-    _flames = new uint8_t[Strip->Length];
-    memset(_flames, 0, Strip->Length);
+    _flames = new float[Strip->Length];
+    for(int i = 0; i < Strip->Length; i++)
+      _flames[i] = 0.0;
 
     for(int i = 0; i < 256; i++)
     {
-        float red = (sqrt(pow(256.0f,2.0f)-pow(256.0f-(float)i,2.0f)));
-        float green = (cos(((float)i*PI/255.0f)+PI)+1.0f)/2 * 255.0f;
-        float blue = (tan((float)i*1.53f/255.0f)/25.0f) * 255.0f;
+        float base = (sqrt(pow(256.0f,2.0f)-pow(256.0f-(float)i,2.0f)));
+        float accent = (cos(((float)i*PI/255.0f)+PI)+1.0f)/2 * 255.0f;
+        float saturation = (tan((float)i*1.53f/255.0f)/25.0f) * 255.0f;
+
+        // These are different colour modes for the flames, to be configurable in a future version
 #if 0
-        _palette[i] = Adafruit_NeoPixel::Color((int)green, (int)blue, (int)red);
+        // Blue is the base with purple accent
+        _palette[i] = Adafruit_NeoPixel::Color((int)accent, (int)saturation, (int)base);
 #else
-        _palette[i] = Adafruit_NeoPixel::Color((int)red, (int)green, (int)blue);
+#if 1
+        // Red is the base with yellow accent
+        _palette[i] = Adafruit_NeoPixel::Color((int)base, (int)accent, (int)saturation);
+#else
+        // Green is the base with yellow accent
+        _palette[i] = Adafruit_NeoPixel::Color((int)accent, (int)base, (int)saturation);
+#endif
 #endif
     }
 }
@@ -376,9 +386,13 @@ FirePlugin::~FirePlugin()
 void FirePlugin::SetParameters(String & parameters)
 {
     _combustion = parameters.toInt();
+    if(_combustion > 255)
+      _combustion = 255;
 
     int i = parameters.indexOf(',', 0);
-    _dissipation = parameters.substring(i+1).toInt();
+    _dissipation = parameters.substring(i+1).toInt()%256;
+    if(_dissipation > 255)
+      _dissipation = 255;
 }
 
 void FirePlugin::Iterate(float deltaTime /* millis */)
@@ -386,28 +400,27 @@ void FirePlugin::Iterate(float deltaTime /* millis */)
   // Dissipate heat away from the flame
   for(int i = 0; i < Strip->Length; i++)
   {
-    int heat = (int)_flames[i] - random(0, ((_dissipation*10)/Strip->Length)+3);
-    _flames[i] = heat < 0 ? 0 : heat;
+    float dissipation = ((float)random(0,768)+_dissipation)/(float)Strip->Length; // 768-1024
+    float residue = _flames[i]-dissipation;
+    _flames[i] = residue < 0.0 ? 0 : residue;
   }
 
   // Move flame upwards
-  for(int i = Strip->Length-1; i > 0; i--)
+  for(int i = Strip->Length-1; i > 1; i--)
   {
-    _flames[i] = ((int)_flames[i - 1] + ((int)_flames[i - 2]*2)) / 3;
+    _flames[i] = (_flames[i - 1] + (_flames[i - 2]*2)) / 3;
   }
+  _flames[1] = _flames[0];
 
   // Burn more at bottom
-  if(random(0,255) < _combustion)
-  {
-    int height = random(0,Strip->Length/8);
-    int heat = (int)_flames[height] + random(130,255);
-    _flames[height] = (heat > 255) ? 255 : heat;
-  }
+  int height = random(0,Strip->Length/8);
+  int heat = _flames[height] + random(0,128)+_combustion;
+  _flames[height] = (heat > 255.0) ? 255.0 : heat;
 
   for(int i = 0; i < Strip->Length; i++)
-    Strip->SetPixelColor(i, _palette[_flames[i]]);
+    Strip->SetPixelColor(i, _palette[(int)_flames[i]]);
 
   Strip->Show();
 
-  delay(10);
+  delay(10); // should depend on distance between pixels
 }

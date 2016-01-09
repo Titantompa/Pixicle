@@ -20,7 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="number"
-        android:text="100"
+        android:text="128"
         android:imeOptions="actionNext"
         android:minEms="3"/>
 
@@ -35,7 +35,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="number"
-        android:text="55"
+        android:text="128"
         android:imeOptions="actionDone"
         android:minEms="3"/>
 

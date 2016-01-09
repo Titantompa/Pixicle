@@ -11,7 +11,6 @@
 #define EEPROM_TOKEN_INDEX 0
 #define EEPROM_PIXELS_INDEX 4
 #define EEPROM_PIN_INDEX 6
-#define EEPROM_HWFLAGS_INDEX 7
 #define EEPROM_CONFIG_INDEX 8
 
 // IMPORTANT: Set pixel COUNT, PIN and TYPE
@@ -124,8 +123,8 @@ NeoPixelStrip* bootstrap()
 {
     uint32_t token;
     uint16_t pixels = PIXEL_COUNT;
-    uint8_t pinNo = PIXEL_PIN;
-    char buffer[90];
+    uint8_t pinNo = D0; // The default
+    char buffer[60];
 
     EEPROM.get(EEPROM_TOKEN_INDEX, token);
 
@@ -134,17 +133,19 @@ NeoPixelStrip* bootstrap()
         token = PIXICLE_TOKEN;
         EEPROM.put(EEPROM_TOKEN_INDEX, token);
         EEPROM.put(EEPROM_PIXELS_INDEX, pixels);
-        EEPROM.put(EEPROM_PIN_INDEX, D0); // The default
-        EEPROM.put(EEPROM_CONFIG_INDEX, "Progress:3.5,255,0,0,0,255,0");
+        EEPROM.put(EEPROM_PIN_INDEX, pinNo);
+        EEPROM.put(EEPROM_CONFIG_INDEX, "Progress:3500,255,0,0,0,255,0");
     }
 
     //
     // Load the stored config
     //
-    EEPROM.get(EEPROM_CONFIG_INDEX, buffer);
-    ApplyConfig(String(buffer));
     EEPROM.get(EEPROM_PIXELS_INDEX, pixels);
     EEPROM.get(EEPROM_PIN_INDEX, pinNo);
+    EEPROM.get(EEPROM_CONFIG_INDEX, buffer);
+    ApplyConfig(String(buffer));
+
+    //pinNo = D0;
 
     return new NeoPixelStrip(new Adafruit_NeoPixel(pixels, pinNo, PIXEL_TYPE));
 }

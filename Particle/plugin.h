@@ -24,10 +24,10 @@ class Plugin
 class FirePlugin : public Plugin
 {
     private:
-        uint32_t _dissipation;
-        uint32_t _combustion;
+        float _dissipation;
+        float _combustion;
 
-        uint8_t * _flames;
+        float * _flames;
 
         uint32_t _palette[256];
 
