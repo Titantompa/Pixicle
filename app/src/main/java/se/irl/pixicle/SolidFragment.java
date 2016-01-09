@@ -1,13 +1,10 @@
 package se.irl.pixicle;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 
 import com.larswerkman.holocolorpicker.ColorPicker;
 import com.larswerkman.holocolorpicker.SaturationBar;
@@ -33,8 +30,7 @@ public class SolidFragment extends PixicleConfigFragmentBase {
      */
     // TODO: Rename and change types and number of parameters
     public static SolidFragment newInstance() {
-        SolidFragment fragment = new SolidFragment();
-        return fragment;
+        return new SolidFragment();
     }
 
     @Override

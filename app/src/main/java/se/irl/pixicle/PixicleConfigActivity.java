@@ -16,13 +16,15 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 
 public class PixicleConfigActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    private static final int LOADER_ID = 1786523;
+    private static final int LOADER_ID = 17;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -59,10 +61,28 @@ public class PixicleConfigActivity extends AppCompatActivity implements LoaderMa
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        try {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        } catch(NullPointerException e) {
+            Log.wtf("Pixicle", e.toString());
+        }
+
+        mViewPager = (ViewPager) findViewById(R.id.container);
 
         // Load values from the database
         // TODO: This should show loading while loading...
+
+        // Create the adapter that will return a fragment for each of the three
+        // primary sections of the activity.
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), mSoftwareVersion);
+
+        // Set up the ViewPager with the sections adapter.
+        mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager.setAdapter(mSectionsPagerAdapter);
+        mViewPager.setOffscreenPageLimit(20);
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(mViewPager);
 
         getLoaderManager().initLoader(LOADER_ID, null, this);
 
@@ -179,17 +199,6 @@ public class PixicleConfigActivity extends AppCompatActivity implements LoaderMa
 
         // TODO: Show the name of the Pixicle in the header, or somewhere
 
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), mSoftwareVersion);
-
-        // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.container);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
-        mViewPager.setOffscreenPageLimit(20);
-
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(mViewPager);
     }
 
     @Override
@@ -203,14 +212,7 @@ public class PixicleConfigActivity extends AppCompatActivity implements LoaderMa
      */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-        private DashFragment mDashFragment = null;
-        private JuggleFragment mJuggleFragment = null;
-        private ProgressFragment mProgressFragment = null;
-        private RainbowFragment mRainbowFragment = null;
-        private SolidFragment mSolidFragment = null;
-        private TwinkleFragment mTwinkleFragment = null;
-        private CustomFragment mCustomFragment = null;
-        private FireFragment mFireFragment = null;
+        private Fragment fragments[] = new Fragment[8];
 
         public SectionsPagerAdapter(FragmentManager fm, int softwareVersion)
         {
@@ -219,25 +221,35 @@ public class PixicleConfigActivity extends AppCompatActivity implements LoaderMa
         }
 
         @Override
+        public Object instantiateItem(ViewGroup container, int position) {
+            Fragment fragment = (Fragment) super.instantiateItem(container, position);
+            fragments[position] = fragment;
+            return fragment;
+        }
+
+        @Override
         public Fragment getItem(int position) {
-            switch(position)
-            {
+
+            if(fragments[position] != null)
+                return fragments[position];
+
+            switch (position) {
                 case 0:
-                    return mJuggleFragment == null ? mJuggleFragment = JuggleFragment.newInstance() : mJuggleFragment;
+                    return JuggleFragment.newInstance();
                 case 1:
-                    return mFireFragment == null ? mFireFragment = FireFragment.newInstance() : mFireFragment;
+                    return FireFragment.newInstance();
                 case 2:
-                    return mTwinkleFragment == null ? mTwinkleFragment =  TwinkleFragment.newInstance(): mTwinkleFragment;
+                    return TwinkleFragment.newInstance();
                 case 3:
-                    return mProgressFragment == null ? mProgressFragment = ProgressFragment.newInstance() : mProgressFragment;
+                    return ProgressFragment.newInstance();
                 case 4:
-                    return mRainbowFragment == null ? mRainbowFragment =  RainbowFragment.newInstance() : mRainbowFragment;
+                    return RainbowFragment.newInstance();
                 case 5:
-                    return mDashFragment == null ? mDashFragment = DashFragment.newInstance() : mDashFragment;
+                    return DashFragment.newInstance();
                 case 6:
-                    return mSolidFragment == null ? mSolidFragment = SolidFragment.newInstance() : mSolidFragment;
+                    return SolidFragment.newInstance();
                 case 7:
-                    return mCustomFragment == null ? mCustomFragment = CustomFragment.newInstance() : mCustomFragment;
+                    return CustomFragment.newInstance();
             }
 
             return null;

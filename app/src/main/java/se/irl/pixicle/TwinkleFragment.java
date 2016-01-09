@@ -1,7 +1,5 @@
 package se.irl.pixicle;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -33,8 +31,7 @@ public class TwinkleFragment extends PixicleConfigFragmentBase {
      */
     // TODO: Rename and change types and number of parameters
     public static TwinkleFragment newInstance() {
-        TwinkleFragment fragment = new TwinkleFragment();
-        return fragment;
+        return new TwinkleFragment();
     }
 
     @Override
