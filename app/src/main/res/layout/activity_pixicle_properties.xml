@@ -42,14 +42,28 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:labelFor="@+id/number_of_leds"
             android:text="@string/props_number_of_leds"/>
 
         <EditText
             android:id="@+id/number_of_leds"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:numeric="integer"
+            android:inputType="number"
             android:minEms="6" />
+
+        <!-- number of leds -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/props_pin_number" />
+
+        <EditText
+            android:id="@+id/pin_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:minEms="2" />
 
         <!-- access token -->
         <TextView

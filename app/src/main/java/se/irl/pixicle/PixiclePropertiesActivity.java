@@ -104,6 +104,7 @@ public class PixiclePropertiesActivity extends AppCompatActivity implements Load
         EditText name = (EditText) findViewById(R.id.device_name);
         EditText deviceId = (EditText) findViewById(R.id.device_id);
         EditText numberOfNeoPixels = (EditText) findViewById(R.id.number_of_leds);
+        EditText pinNumber = (EditText) findViewById(R.id.pin_number);
         EditText accessToken = (EditText) findViewById(R.id.access_token);
         Spinner softwareVersion = (Spinner) findViewById(R.id.software_version);
 
@@ -112,6 +113,10 @@ public class PixiclePropertiesActivity extends AppCompatActivity implements Load
         values.put(PixicleContentProvider.DEVICE_ID_COLUMN, deviceId.getText().toString().toLowerCase());
         values.put(PixicleContentProvider.NUMBER_OF_NEOPIXELS_COLUMN, numberOfNeoPixels.getText().toString());
         values.put(PixicleContentProvider.NEOPIXEL_ARRANGEMENT_COLUMN, Constants.ARRAGEMENT_ARRAY);
+        if(pinNumber.getText().length() == 0)
+            values.putNull(PixicleContentProvider.PIN_NUMBER_COLUMN);
+        else
+            values.put(PixicleContentProvider.PIN_NUMBER_COLUMN, pinNumber.getText().toString());
         if(accessToken.getText().length() == 0)
             values.putNull(PixicleContentProvider.ACCESS_TOKEN_COLUMN);
         else
@@ -169,6 +174,7 @@ public class PixiclePropertiesActivity extends AppCompatActivity implements Load
         EditText name = (EditText) findViewById(R.id.device_name);
         EditText deviceId = (EditText) findViewById(R.id.device_id);
         EditText numberOfNeoPixels = (EditText) findViewById(R.id.number_of_leds);
+        EditText pinNumber = (EditText) findViewById(R.id.pin_number);
         EditText accessToken = (EditText) findViewById(R.id.access_token);
         Spinner softwareVersion = (Spinner) findViewById(R.id.software_version);
 
@@ -177,11 +183,14 @@ public class PixiclePropertiesActivity extends AppCompatActivity implements Load
         int softwareVersionColumn = data.getColumnIndex(PixicleContentProvider.SOFTWARE_VERSION_COLUMN);
         int numberOfNeoPixelsColumn = data.getColumnIndex(PixicleContentProvider.NUMBER_OF_NEOPIXELS_COLUMN);
         int accessTokenColumn = data.getColumnIndex(PixicleContentProvider.ACCESS_TOKEN_COLUMN);
+        int pinNumberColumn = data.getColumnIndex(PixicleContentProvider.PIN_NUMBER_COLUMN);
 
         try {
             name.setText(data.getString(nameColumn));
             deviceId.setText(data.getString(deviceIdColumn));
             softwareVersion.setSelection(data.getInt(softwareVersionColumn) - 1, true);
+            if(!data.isNull(pinNumberColumn))
+                pinNumber.setText(data.getString(pinNumberColumn));
             if(!data.isNull(accessTokenColumn))
                 accessToken.setText(data.getString(accessTokenColumn));
             numberOfNeoPixels.setText(data.getString(numberOfNeoPixelsColumn));

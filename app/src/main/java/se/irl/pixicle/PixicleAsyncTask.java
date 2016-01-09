@@ -12,7 +12,7 @@ import java.net.URL;
 public class PixicleAsyncTask extends AsyncTask<String, Void, Boolean> {
 
     public static String FUNCTION_APPLY_CONFIG = "ApplyConfig";
-    public static String FUNCTION_SET_PIXEL_COUNT = "SetPixelCnt";
+    public static String FUNCTION_SET_HARDWARE_CONFIG = "SetHWCfg";
     public static String FUNCTION_SCHEDULE_CONFIG = "ScheduleCfg";
 
     /***

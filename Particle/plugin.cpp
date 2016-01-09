@@ -409,5 +409,5 @@ void FirePlugin::Iterate(float deltaTime /* millis */)
 
   Strip->Show();
 
-  delay(33);
+  delay(10);
 }

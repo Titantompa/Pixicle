@@ -26,6 +26,7 @@ public class PixicleContentProvider extends ContentProvider {
     public static final String SOFTWARE_VERSION_COLUMN = "softwareVersion";
     public static final String NEOPIXEL_ARRANGEMENT_COLUMN = "neoPixelArrangement";
     public static final String NUMBER_OF_NEOPIXELS_COLUMN = "numberOfNeoPixels";
+    public static final String PIN_NUMBER_COLUMN = "pinNumber";
     public static final String ACCESS_TOKEN_COLUMN = "accessToken";
     public static final String CREATED_TIME_COLUMN = "createdTime";
     public static final String TIMESTAMP_COLUMN = "timestamp";
@@ -171,7 +172,7 @@ public class PixicleContentProvider extends ContentProvider {
     private SQLiteDatabase db;
     static final String DATABASE_NAME = "Pixicle";
     static final String PIXICLE_TABLE_NAME = "Pixicle";
-    static final int DATABASE_VERSION = 4;
+    static final int DATABASE_VERSION = 5;
     static final String CREATE_PIXICLE_DB_TABLE =
             " CREATE TABLE " + PIXICLE_TABLE_NAME +
                     " (_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -179,6 +180,7 @@ public class PixicleContentProvider extends ContentProvider {
                     " name TEXT NOT NULL, " +
                     " softwareVersion INTEGER NOT NULL, " +
                     " numberOfNeoPixels INTEGER NOT NULL, " +
+                    " pinNumber INTEGER NULL," +
                     " neoPixelArrangement INTEGER NOT NULL, " + // Array, Helical, Random, Raster
                     " accessToken TEXT NULL, " +
                     " createdTime DATETIME NOT NULL, " +

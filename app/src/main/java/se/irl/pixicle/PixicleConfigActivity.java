@@ -46,6 +46,7 @@ public class PixicleConfigActivity extends AppCompatActivity implements LoaderMa
     private String mAccessToken;
     private int mSoftwareVersion = -1;
     private int mNumberOfPixels = 66;
+    private int mPinNumber = 0; // 0 is the default pin
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,7 +106,7 @@ public class PixicleConfigActivity extends AppCompatActivity implements LoaderMa
 
             case R.id.send_pixicle_hwconfig:
                 // Send the off command to the Pixicle
-                new PixicleAsyncTask().execute(mAccessToken, mDeviceIdentifier, PixicleAsyncTask.FUNCTION_SET_PIXEL_COUNT, Integer.toString(mNumberOfPixels));
+                new PixicleAsyncTask().execute(mAccessToken, mDeviceIdentifier, PixicleAsyncTask.FUNCTION_SET_HARDWARE_CONFIG, Integer.toString(mNumberOfPixels)+","+Integer.toString(mPinNumber));
                 return true;
 
             case R.id.schedule_configuration:
@@ -158,6 +159,7 @@ public class PixicleConfigActivity extends AppCompatActivity implements LoaderMa
         int softwareVersionColumn = data.getColumnIndex(PixicleContentProvider.SOFTWARE_VERSION_COLUMN);
         int accessTokenColumn = data.getColumnIndex(PixicleContentProvider.ACCESS_TOKEN_COLUMN);
         int numberOfNeoPixelsColumn = data.getColumnIndex(PixicleContentProvider.NUMBER_OF_NEOPIXELS_COLUMN);
+        int pinNumberColumn = data.getColumnIndex(PixicleContentProvider.PIN_NUMBER_COLUMN);
 
         data.moveToFirst();
 
@@ -165,6 +167,10 @@ public class PixicleConfigActivity extends AppCompatActivity implements LoaderMa
         mPixicleId = data.getInt(idColumn);
         mPixicleName = data.getString(nameColumn);
         mSoftwareVersion = data.getInt(softwareVersionColumn);
+        if(data.isNull(pinNumberColumn))
+            mPinNumber = 0;
+        else
+            mPinNumber = data.getInt(pinNumberColumn);
         if(data.isNull(accessTokenColumn))
             mAccessToken = null;
         else

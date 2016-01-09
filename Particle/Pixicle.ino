@@ -10,7 +10,8 @@
 
 #define EEPROM_TOKEN_INDEX 0
 #define EEPROM_PIXELS_INDEX 4
-#define EEPROM_HWFLAGS_INDEX 6
+#define EEPROM_PIN_INDEX 6
+#define EEPROM_HWFLAGS_INDEX 7
 #define EEPROM_CONFIG_INDEX 8
 
 // IMPORTANT: Set pixel COUNT, PIN and TYPE
@@ -22,7 +23,6 @@ NeoPixelStrip * strip = NULL;
 Plugin * CurrentPlugin = NULL;
 String * CurrentConfig = NULL;
 char ConfigBuffer[200];
-char ScheduleDebug[48];
 unsigned long Configuration_TimeStamp = millis();
 unsigned long ActiveConfig_TimeStamp = ~0;
 int ChatBack = 0;
@@ -75,31 +75,26 @@ String * ScheduledConfiguration = NULL;
 
 int ScheduleCfg(String parameters)
 {
-  memcpy(ScheduleDebug, "hejsan", 7);
-
     if(ScheduledConfiguration != NULL)
     {
       delete ScheduledConfiguration;
       ScheduledConfiguration = NULL;
     }
 
-    memcpy(ScheduleDebug, "svejsan", 8);
-
     ScheduledMillis = parameters.toInt();
 
     int i = parameters.indexOf(':', 0);
     ScheduledConfiguration = new String(parameters.substring(i+1));
-
-    String debug = String::format("Schedule at %d, time now at %d", ScheduledMillis, Time.now());
-
-    debug.toCharArray(ScheduleDebug, 96);
 }
 
-int SetPixelCnt(String param)
+int SetHardwareConfig(String param)
 {
     uint16_t pixelCnt = param.toInt();
+    int i = param.indexOf(',', 0);
+    uint8_t pinNo = param.substring(i+1).toInt();
 
     EEPROM.put(EEPROM_PIXELS_INDEX, pixelCnt);
+    EEPROM.put(EEPROM_PIN_INDEX, pinNo);
 
     System.reset();
 
@@ -129,6 +124,7 @@ NeoPixelStrip* bootstrap()
 {
     uint32_t token;
     uint16_t pixels = PIXEL_COUNT;
+    uint8_t pinNo = PIXEL_PIN;
     char buffer[90];
 
     EEPROM.get(EEPROM_TOKEN_INDEX, token);
@@ -138,6 +134,7 @@ NeoPixelStrip* bootstrap()
         token = PIXICLE_TOKEN;
         EEPROM.put(EEPROM_TOKEN_INDEX, token);
         EEPROM.put(EEPROM_PIXELS_INDEX, pixels);
+        EEPROM.put(EEPROM_PIN_INDEX, D0); // The default
         EEPROM.put(EEPROM_CONFIG_INDEX, "Progress:3.5,255,0,0,0,255,0");
     }
 
@@ -147,8 +144,9 @@ NeoPixelStrip* bootstrap()
     EEPROM.get(EEPROM_CONFIG_INDEX, buffer);
     ApplyConfig(String(buffer));
     EEPROM.get(EEPROM_PIXELS_INDEX, pixels);
+    EEPROM.get(EEPROM_PIN_INDEX, pinNo);
 
-    return new NeoPixelStrip(new Adafruit_NeoPixel(pixels, PIXEL_PIN, PIXEL_TYPE));
+    return new NeoPixelStrip(new Adafruit_NeoPixel(pixels, pinNo, PIXEL_TYPE));
 }
 
 void setup()
@@ -158,13 +156,12 @@ void setup()
     //
     Particle.function("ApplyConfig", ApplyConfig);
     Particle.function("ScheduleCfg", ScheduleCfg);
-    Particle.function("SetPixelCnt", SetPixelCnt);
+    Particle.function("SetHWCfg", SetHardwareConfig);
     Particle.function("Ping", Ping);
     Particle.variable("CurrentCfg", ConfigBuffer, STRING);
     Particle.variable("AvgMicros", &AverageMicros, INT);
     Particle.variable("ChatBack", &ChatBack, INT);
     Particle.variable("LoopCnt", &LoopCnt, INT);
-    Particle.variable("Schedule", ScheduleDebug, STRING);
 
     //
     // Start up the NeoPixel strip and turn everything off

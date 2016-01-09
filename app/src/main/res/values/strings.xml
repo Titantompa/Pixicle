@@ -55,4 +55,5 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="combustion">Combustion (0-255):</string>
     <string name="dissipation">Dissipation (0-255)</string>
+    <string name="props_pin_number">Pin number:</string>
 </resources>
