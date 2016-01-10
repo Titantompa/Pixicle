@@ -56,4 +56,5 @@
     <string name="combustion">Combustion (0-255):</string>
     <string name="dissipation">Dissipation (0-255)</string>
     <string name="props_pin_number">Pin number:</string>
+    <string name="title_properties_pixicle_config">Properties</string>
 </resources>

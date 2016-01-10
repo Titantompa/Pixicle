@@ -29,8 +29,15 @@
             android:exported="false">
         </provider>
 
-        <activity android:name=".PixiclePropertiesActivity">
+        <activity android:name=".PixiclePropertiesActivity"
+            android:label="@string/title_properties_pixicle_config"
+            android:parentActivityName=".PixiclePickerActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="se.irl.pixicle.PixiclePickerActivity"/>
         </activity>
+
         <activity
             android:name=".PixicleConfigActivity"
             android:label="@string/title_activity_pixicle_config"
@@ -40,6 +47,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="se.irl.pixicle.PixiclePickerActivity"/>
         </activity>
+
         <activity
             android:name=".ScheduleConfigurationActivity"
             android:label="@string/title_activity_schedule_configuration"

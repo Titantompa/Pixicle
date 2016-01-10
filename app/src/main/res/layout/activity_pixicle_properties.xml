@@ -10,108 +10,125 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="se.irl.pixicle.PixiclePropertiesActivity">
 
-    <LinearLayout
+    <!-- This was put here to get the copy-paste panel to stay on screen and not be scrolled off
+    when used on any of the lower EditText boxes -->
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:scrollbarAlwaysDrawVerticalTrack="false"
+        android:layout_marginBottom="@dimen/abc_action_bar_default_height_material"
+        android:overScrollMode="ifContentScrolls">
 
-        <!-- name -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/props_device_name"
-            />
-        <EditText
-            android:id="@+id/device_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:minEms="12"/>
-
-        <!-- identity -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/props_device_id"/>
-        <EditText
-            android:id="@+id/device_id"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:digits="1234567890ABCDEFabcdef"/>
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <!-- number of leds -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:labelFor="@+id/number_of_leds"
-            android:text="@string/props_number_of_leds"/>
-
-        <EditText
-            android:id="@+id/number_of_leds"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:minEms="6" />
-
-        <!-- number of leds -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/props_pin_number" />
-
-        <EditText
-            android:id="@+id/pin_number"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:minEms="2" />
-
-        <!-- access token -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/props_access_token"
-            />
-
-        <EditText
-            android:id="@+id/access_token"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:digits="1234567890ABCDEFabcdef"/>
-
-        <!-- software version -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/props_software_version"/>
-
-        <Spinner
-            android:id="@+id/software_version"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-        </Spinner>
-
-        <!-- TODO: add some space... -->
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <Button
-                android:id="@+id/delete_button"
-                android:layout_height="wrap_content"
+            <!-- name -->
+            <TextView
                 android:layout_width="wrap_content"
-                android:text="@string/props_delete"
-                android:onClick="onDeleteButton"
-                android:layout_alignParentLeft="true"
-                />
-            <Button
-                android:id="@+id/save_button"
                 android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:text="@string/props_save"
-                android:onClick="onSaveButton"
-                android:layout_alignParentRight="true"
+                android:text="@string/props_device_name"
                 />
-        </RelativeLayout>
-    </LinearLayout>
+
+            <EditText
+                android:id="@+id/device_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minEms="12"
+                android:imeOptions="actionNext"/>
+
+            <!-- identity -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/props_device_id"/>
+
+            <EditText
+                android:id="@+id/device_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:digits="1234567890ABCDEFabcdef"
+                android:imeOptions="actionNext"/>
+
+            <!-- number of leds -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:labelFor="@+id/number_of_leds"
+                android:text="@string/props_number_of_leds"/>
+
+            <EditText
+                android:id="@+id/number_of_leds"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:minEms="6"
+                android:imeOptions="actionNext"/>
+
+            <!-- output pin number -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/props_pin_number" />
+
+            <EditText
+                android:id="@+id/pin_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:minEms="2"
+                android:imeOptions="actionNext"/>
+
+            <!-- access token -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/props_access_token"
+                />
+
+            <EditText
+                android:id="@+id/access_token"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:digits="1234567890ABCDEFabcdef"
+                android:imeOptions="actionDone"/>
+
+            <!-- software version -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/props_software_version"/>
+
+            <Spinner
+                android:id="@+id/software_version"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            </Spinner>
+
+            <!-- TODO: add some space... -->
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <Button
+                    android:id="@+id/delete_button"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="@string/props_delete"
+                    android:onClick="onDeleteButton"
+                    android:layout_alignParentLeft="true"
+                    />
+                <Button
+                    android:id="@+id/save_button"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="@string/props_save"
+                    android:onClick="onSaveButton"
+                    android:layout_alignParentRight="true"
+                    />
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
 </RelativeLayout>
