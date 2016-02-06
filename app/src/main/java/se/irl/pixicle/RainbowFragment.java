@@ -41,6 +41,14 @@ public class RainbowFragment extends PixicleConfigFragmentBase {
     public String getPixicleConfigArgs() {
         View view = getView();
         EditText speedEdit = (EditText) view.findViewById(R.id.rainbow_speed);
-        return "Rainbow:" + speedEdit.getText();
+        return speedEdit.getText().toString();
     }
+
+    @Override
+    public boolean setPixicleConfigArgs(String config) {
+        return false;
+    }
+
+    @Override
+    public String getPluginName() { return "Rainbow"; }
 }

@@ -75,13 +75,20 @@ public class ProgressFragment extends PixicleConfigFragmentBase {
 
         percentage *= 100;
 
-        return "Progress:" +
-                percentage.intValue() + "," +
-                fromRed.toString() + "," +
-                fromGreen.toString() + "," +
-                fromBlue.toString() + "," +
-                toRed.toString() + "," +
-                toGreen.toString() + "," +
-                toBlue.toString();
+        return percentage.intValue() + "," +
+               fromRed.toString() + "," +
+               fromGreen.toString() + "," +
+               fromBlue.toString() + "," +
+               toRed.toString() + "," +
+               toGreen.toString() + "," +
+               toBlue.toString();
     }
+
+    @Override
+    public boolean setPixicleConfigArgs(String config) {
+        return false;
+    }
+
+    @Override
+    public String getPluginName() { return "Progress"; }
 }

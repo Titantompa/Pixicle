@@ -63,11 +63,18 @@ public class JuggleFragment extends PixicleConfigFragmentBase {
         Integer green = (color & 0x0000ff00)>>8;
         Integer blue = color & 0x000000ff;
 
-        return "Juggle:" +
-                intervalEdit.getText().toString() + "," +
-                red.toString() + "," +
-                green.toString() + "," +
-                blue.toString() +"," +
-                (flickering.isChecked() ? "1" : "0");
+        return intervalEdit.getText().toString() + "," +
+               red.toString() + "," +
+               green.toString() + "," +
+               blue.toString() +"," +
+               (flickering.isChecked() ? "1" : "0");
     }
+
+    @Override
+    public boolean setPixicleConfigArgs(String config) {
+        return false;
+    }
+
+    @Override
+    public String getPluginName() { return "Juggle"; }
 }

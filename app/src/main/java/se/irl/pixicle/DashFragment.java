@@ -60,11 +60,18 @@ public class DashFragment extends PixicleConfigFragmentBase {
         Integer green = (color & 0x0000ff00)>>8;
         Integer blue = color & 0x000000ff;
 
-        return "Dash:" +
-                lengthEdit.getText() + "," +
-                speedEdit.getText() + "," +
-                red.toString() + "," +
-                green.toString() + "," +
-                blue.toString();
+        return lengthEdit.getText() + "," +
+               speedEdit.getText() + "," +
+               red.toString() + "," +
+               green.toString() + "," +
+               blue.toString();
     }
+
+    @Override
+    public boolean setPixicleConfigArgs(String config) {
+        return false;
+    }
+
+    @Override
+    public String getPluginName() { return "Dash"; }
 }

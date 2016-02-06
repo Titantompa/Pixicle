@@ -62,12 +62,19 @@ public class TwinkleFragment extends PixicleConfigFragmentBase {
         Integer green = (color & 0x0000ff00)>>8;
         Integer blue = color & 0x000000ff;
 
-        return "Twinkle:" +
-                countEdit.getText().toString() + "," +
-                durationEdit.getText().toString() + "," +
-                red.toString() + "," +
-                green.toString() + "," +
-                blue.toString() +"," +
-                (flickering.isChecked() ? "1" : "0");
+        return countEdit.getText().toString() + "," +
+               durationEdit.getText().toString() + "," +
+               red.toString() + "," +
+               green.toString() + "," +
+               blue.toString() +"," +
+               (flickering.isChecked() ? "1" : "0");
     }
+
+    @Override
+    public boolean setPixicleConfigArgs(String config) {
+        return false;
+    }
+
+    @Override
+    public String getPluginName() { return "Twinkle"; }
 }

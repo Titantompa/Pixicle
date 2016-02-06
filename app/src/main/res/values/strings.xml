@@ -51,10 +51,14 @@
     <string name="title_activity_schedule_configuration">Schedule Configuration</string>
     <string name="props_delete">Delete</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="combustion">Combustion (0-255):</string>
     <string name="dissipation">Dissipation (0-255)</string>
     <string name="props_pin_number">Pin number:</string>
     <string name="title_properties_pixicle_config">Properties</string>
-</resources>
+    <string name="transition_style_label">Transition style</string>
+
+    <string-array name="props_transition_styles_array">
+        <item>Linear</item>
+        <item>Sine</item>
+        <item>Arcsine</item>
+    </string-array></resources>

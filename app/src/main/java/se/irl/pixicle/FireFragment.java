@@ -42,8 +42,14 @@ public class FireFragment extends PixicleConfigFragmentBase {
         EditText dissipationEdit = (EditText) view.findViewById(R.id.fire_dissipation);
         EditText combustionEdit = (EditText) view.findViewById(R.id.fire_combustion);
 
-        return "Fire:"+
-                combustionEdit.getText()+","+
-                dissipationEdit.getText();
+        return combustionEdit.getText()+"," + dissipationEdit.getText();
     }
+
+    @Override
+    public boolean setPixicleConfigArgs(String config) {
+        return false;
+    }
+
+    @Override
+    public String getPluginName() { return "Fire"; }
 }

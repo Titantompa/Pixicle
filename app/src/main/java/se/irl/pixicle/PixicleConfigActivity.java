@@ -1,6 +1,8 @@
 package se.irl.pixicle;
 
 import android.app.LoaderManager;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
@@ -22,9 +24,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.Date;
+
 public class PixicleConfigActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    private static final int LOADER_ID = 17;
+    private static final int PIXICLE_LOADER_ID = 17;
+    private static final int CONFIGURATIONS_LOADER_ID = 18;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -84,7 +89,8 @@ public class PixicleConfigActivity extends AppCompatActivity implements LoaderMa
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
-        getLoaderManager().initLoader(LOADER_ID, null, this);
+        getLoaderManager().initLoader(PIXICLE_LOADER_ID, null, this);
+        getLoaderManager().initLoader(CONFIGURATIONS_LOADER_ID, null, this);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -96,9 +102,26 @@ public class PixicleConfigActivity extends AppCompatActivity implements LoaderMa
 
                 PixicleConfigFragmentBase configFragment = (PixicleConfigFragmentBase) pagerAdapter.getItem(pos);
 
+                String plugin = configFragment.getPluginName();
                 String args = configFragment.getPixicleConfigArgs();
 
-                new PixicleAsyncTask().execute(mAccessToken, mDeviceIdentifier, PixicleAsyncTask.FUNCTION_APPLY_CONFIG, args);
+                new PixicleAsyncTask().execute(mAccessToken, mDeviceIdentifier, PixicleAsyncTask.FUNCTION_APPLY_CONFIG, plugin+":"+args);
+
+                // Save to database
+                ContentValues values = new ContentValues();
+                values.put(PixicleContentProvider.CONFIGURATION_PIXICLE_ID_COLUMN, mPixicleId);
+                values.put(PixicleContentProvider.DEVICE_ID_COLUMN, mDeviceIdentifier);
+                values.put(PixicleContentProvider.PLUGIN_NAME_COLUMN, plugin);
+                values.put(PixicleContentProvider.CONFIGURATION_COLUMN, args);
+                values.put(PixicleContentProvider.CREATED_TIME_COLUMN, Constants.StdDateFormat.format(new Date()));
+                values.put(PixicleContentProvider.TIMESTAMP_COLUMN, Constants.StdDateFormat.format(new Date()));
+
+                ContentResolver contentResolver = getContentResolver();
+
+                Uri uri = Uri.withAppendedPath(Uri.withAppendedPath(PixicleContentProvider.CONFIGURATION_URI, Integer.toString(mPixicleId)), plugin);
+
+                if(contentResolver.update(uri, values, null, null) == 0)
+                    contentResolver.insert(PixicleContentProvider.CONFIGURATION_URI, values);
             }
         });
     }
@@ -134,13 +157,14 @@ public class PixicleConfigActivity extends AppCompatActivity implements LoaderMa
                 int pos = mViewPager.getCurrentItem();
                 SectionsPagerAdapter pagerAdapter = (SectionsPagerAdapter) mViewPager.getAdapter();
                 PixicleConfigFragmentBase configFragment = (PixicleConfigFragmentBase) pagerAdapter.getItem(pos);
+                String plugin = configFragment.getPluginName();
                 String configuration = configFragment.getPixicleConfigArgs();
 
                 Intent intent = new Intent(getApplicationContext(), ScheduleConfigurationActivity.class);
                 intent.putExtra(Constants.ARG_PIXICLE_IDENTITY, mPixicleId);
                 intent.putExtra(Constants.ARG_DEVICE_IDENTITY, mDeviceIdentifier);
                 intent.putExtra(Constants.ARG_ACCESS_TOKEN, mAccessToken);
-                intent.putExtra(Constants.ARG_CONFIGURATION, configuration);
+                intent.putExtra(Constants.ARG_CONFIGURATION, plugin+":"+configuration);
                 startActivity(intent);
                 return true;
         }
@@ -153,18 +177,15 @@ public class PixicleConfigActivity extends AppCompatActivity implements LoaderMa
         if (mPixicleId == -1)
             return null;
 
+        Uri uri;
+
         switch(id) {
-            case LOADER_ID:
-
-                Uri uri = Uri.withAppendedPath(PixicleContentProvider.PIXICLE_URI, Integer.toString(mPixicleId));
-
-                return new CursorLoader(
-                        this,
-                        uri,
-                        null, // projection
-                        null, // selection
-                        null, // selectionArgs
-                        null);
+            case PIXICLE_LOADER_ID:
+                uri = Uri.withAppendedPath(PixicleContentProvider.PIXICLE_URI, Integer.toString(mPixicleId));
+                return new CursorLoader(this, uri, null, null, null, null);
+            case CONFIGURATIONS_LOADER_ID:
+                uri = Uri.withAppendedPath(PixicleContentProvider.CONFIGURATION_URI, Integer.toString(mPixicleId));
+                return new CursorLoader(this, uri, null, null, null, null);
         }
 
         return null;
@@ -173,32 +194,41 @@ public class PixicleConfigActivity extends AppCompatActivity implements LoaderMa
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 
-        int idColumn = data.getColumnIndex(PixicleContentProvider.PIXICLE_ID_COLUMN);
-        int nameColumn = data.getColumnIndex(PixicleContentProvider.NAME_COLUMN);
-        int deviceIdColumn = data.getColumnIndex(PixicleContentProvider.DEVICE_ID_COLUMN);
-        int softwareVersionColumn = data.getColumnIndex(PixicleContentProvider.SOFTWARE_VERSION_COLUMN);
-        int accessTokenColumn = data.getColumnIndex(PixicleContentProvider.ACCESS_TOKEN_COLUMN);
-        int numberOfNeoPixelsColumn = data.getColumnIndex(PixicleContentProvider.NUMBER_OF_NEOPIXELS_COLUMN);
-        int pinNumberColumn = data.getColumnIndex(PixicleContentProvider.PIN_NUMBER_COLUMN);
+        switch(loader.getId()) {
+            case PIXICLE_LOADER_ID:
+                int idColumn = data.getColumnIndex(PixicleContentProvider.PIXICLE_ID_COLUMN);
+                int nameColumn = data.getColumnIndex(PixicleContentProvider.NAME_COLUMN);
+                int deviceIdColumn = data.getColumnIndex(PixicleContentProvider.DEVICE_ID_COLUMN);
+                int softwareVersionColumn = data.getColumnIndex(PixicleContentProvider.SOFTWARE_VERSION_COLUMN);
+                int accessTokenColumn = data.getColumnIndex(PixicleContentProvider.ACCESS_TOKEN_COLUMN);
+                int numberOfNeoPixelsColumn = data.getColumnIndex(PixicleContentProvider.NUMBER_OF_NEOPIXELS_COLUMN);
+                int pinNumberColumn = data.getColumnIndex(PixicleContentProvider.PIN_NUMBER_COLUMN);
 
-        data.moveToFirst();
+                data.moveToFirst();
 
-        mDeviceIdentifier = data.getString(deviceIdColumn);
-        mPixicleId = data.getInt(idColumn);
-        mPixicleName = data.getString(nameColumn);
-        mSoftwareVersion = data.getInt(softwareVersionColumn);
-        if(data.isNull(pinNumberColumn))
-            mPinNumber = 0;
-        else
-            mPinNumber = data.getInt(pinNumberColumn);
-        if(data.isNull(accessTokenColumn))
-            mAccessToken = null;
-        else
-            mAccessToken = data.getString(accessTokenColumn);
-        mNumberOfPixels = data.getInt(numberOfNeoPixelsColumn);
+                mDeviceIdentifier = data.getString(deviceIdColumn);
+                mPixicleId = data.getInt(idColumn);
+                mPixicleName = data.getString(nameColumn);
+                mSoftwareVersion = data.getInt(softwareVersionColumn);
+                if (data.isNull(pinNumberColumn))
+                    mPinNumber = 0;
+                else
+                    mPinNumber = data.getInt(pinNumberColumn);
+                if (data.isNull(accessTokenColumn))
+                    mAccessToken = null;
+                else
+                    mAccessToken = data.getString(accessTokenColumn);
+                mNumberOfPixels = data.getInt(numberOfNeoPixelsColumn);
 
-        // TODO: Show the name of the Pixicle in the header, or somewhere
+                // TODO: Show the name of the Pixicle in the header, or somewhere?
+                break;
+            case CONFIGURATIONS_LOADER_ID:
 
+
+
+
+                break;
+        }
     }
 
     @Override
@@ -245,10 +275,12 @@ public class PixicleConfigActivity extends AppCompatActivity implements LoaderMa
                 case 4:
                     return RainbowFragment.newInstance();
                 case 5:
-                    return DashFragment.newInstance();
+                    return GradientFragment.newInstance();
                 case 6:
-                    return SolidFragment.newInstance();
+                    return DashFragment.newInstance();
                 case 7:
+                    return SolidFragment.newInstance();
+                case 8:
                     return CustomFragment.newInstance();
             }
 
@@ -272,10 +304,12 @@ public class PixicleConfigActivity extends AppCompatActivity implements LoaderMa
                 case 4:
                     return "Rainbow";
                 case 5:
-                    return "Dash";
+                    return "Gradient";
                 case 6:
-                    return "Solid";
+                    return "Dash";
                 case 7:
+                    return "Solid";
+                case 8:
                     return "Custom";
             }
             return null;

@@ -39,6 +39,17 @@ public class CustomFragment extends PixicleConfigFragmentBase {
     @Override
     public String getPixicleConfigArgs() {
         EditText custom = (EditText) getView().findViewById(R.id.custom_config);
-        return custom.getText().toString();
+        return custom.getText().toString().split(":")[1];
+    }
+
+    @Override
+    public boolean setPixicleConfigArgs(String config) {
+        return false;
+    }
+
+    @Override
+    public String getPluginName() {
+        EditText custom = (EditText) getView().findViewById(R.id.custom_config);
+        return custom.getText().toString().split(":")[0];
     }
 }

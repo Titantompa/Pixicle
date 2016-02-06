@@ -58,9 +58,16 @@ public class SolidFragment extends PixicleConfigFragmentBase {
         Integer green = (color & 0x0000ff00)>>8;
         Integer blue = color & 0x000000ff;
 
-        return "Solid:" +
-                red.toString() + "," +
-                green.toString() + "," +
-                blue.toString();
+        return red.toString() + "," +
+               green.toString() + "," +
+               blue.toString();
     }
+
+    @Override
+    public boolean setPixicleConfigArgs(String config) {
+        return false;
+    }
+
+    @Override
+    public String getPluginName() { return "Solid"; }
 }
