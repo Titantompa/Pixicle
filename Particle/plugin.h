@@ -65,7 +65,6 @@ class DashPlugin : public Plugin
         virtual void SetParameters(String & parameters);
 };
 
-
 class OffPlugin : public Plugin
 {
     public:
@@ -159,4 +158,27 @@ class ProgressPlugin : public Plugin
         // tb = uint8_t blue component foreground
         virtual void SetParameters(String & parameters);
 };
+
+class GradientPlugin : public Plugin
+{
+    private:
+        uint32_t * _pixels;
+
+    public:
+        GradientPlugin(NeoPixelStrip * strip, String & parameters);
+        ~GradientPlugin();
+
+        virtual void Iterate(float deltaTime /* millis */);
+
+        // parameters: "<style>,<fr>,<fg>,<fb>,<tr>,<tg>,<tb>"
+        // style = 'A' - Arcsin, 'S' - Sin or 'L' - Linear
+        // fr = uint8_t red component background
+        // fg = uint8_t green component background
+        // fb = uint8_t blue component background
+        // tr = uint8_t red component foreground
+        // tg = uint8_t green component foreground
+        // tb = uint8_t blue component foreground
+        virtual void SetParameters(String & parameters);
+};
+
 #endif // #ifndef _PLUGIN_H

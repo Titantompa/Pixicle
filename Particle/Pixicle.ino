@@ -134,7 +134,7 @@ NeoPixelStrip* bootstrap()
         EEPROM.put(EEPROM_TOKEN_INDEX, token);
         EEPROM.put(EEPROM_PIXELS_INDEX, pixels);
         EEPROM.put(EEPROM_PIN_INDEX, pinNo);
-        EEPROM.put(EEPROM_CONFIG_INDEX, "Progress:3500,255,0,0,0,255,0");
+        EEPROM.put(EEPROM_CONFIG_INDEX, "Progress:2500,255,0,0,0,255,0");
     }
 
     //
@@ -145,9 +145,7 @@ NeoPixelStrip* bootstrap()
     EEPROM.get(EEPROM_CONFIG_INDEX, buffer);
     ApplyConfig(String(buffer));
 
-    //pinNo = D0;
-
-    return new NeoPixelStrip(new Adafruit_NeoPixel(pixels, pinNo, PIXEL_TYPE));
+    return new NeoPixelStrip(new Adafruit_NeoPixel(pixels, pinNo, WS2812B));
 }
 
 void setup()

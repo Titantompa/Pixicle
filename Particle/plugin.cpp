@@ -37,10 +37,7 @@ void OffPlugin::Iterate(float deltaTime /* millis */)
     Strip->Show();
 
     // This only surfaces for air every second
-    if(deltaTime < 1000.0)
-    {
-        delay(1000.0-deltaTime);
-    }
+    delay(1000.0);
 }
 
 /////////////////////////////////////
@@ -61,13 +58,6 @@ void RainbowPlugin::SetParameters(String & parameters)
 
 void RainbowPlugin::Iterate(float deltaTime /* millis */)
 {
-    // Don't go faster than the speed
-    if(deltaTime < _speed)
-    {
-        delay(_speed-deltaTime);
-        deltaTime += _speed-deltaTime;
-    }
-
     _currentPosition = fmod(_currentPosition+(deltaTime/_speed), 255);
 
     int j = round(_currentPosition);
@@ -78,6 +68,9 @@ void RainbowPlugin::Iterate(float deltaTime /* millis */)
     }
 
     Strip->Show();
+
+    // Don't go faster than the speed
+    delay(_speed);
 }
 
  // Input a value 0 to 255 to get a color value.
@@ -128,10 +121,7 @@ void SolidColorPlugin::Iterate(float deltaTime /* millis */)
     Strip->Show();
 
     // This only surfaces for air every second
-    if(deltaTime < 1000.0)
-    {
-        delay(1000.0-deltaTime);
-    }
+    delay(1000.0);
 }
 
 
@@ -180,10 +170,7 @@ void ProgressPlugin::Iterate(float deltaTime /* millis */)
 
     Strip->Show();
 
-    if(deltaTime < 1000.0)
-    {
-        delay(1000.0-deltaTime);
-    }
+    delay(1000.0);
 }
 
 /////////////////////////////////////
@@ -215,13 +202,6 @@ void DashPlugin::SetParameters(String & parameters)
 
 void DashPlugin::Iterate(float deltaTime /* millis */)
 {
-    // Don't go faster than the speed
-    if(deltaTime < _speed)
-    {
-        delay(_speed-deltaTime);
-        deltaTime += _speed-deltaTime;
-    }
-
     _currentPosition = fmod(_currentPosition+(deltaTime/_speed), _width*2);
 
     int j = round(_currentPosition);
@@ -237,6 +217,9 @@ void DashPlugin::Iterate(float deltaTime /* millis */)
     }
 
     Strip->Show();
+
+    // Don't go faster than the speed
+    delay(_speed);
 }
 
 
@@ -423,4 +406,101 @@ void FirePlugin::Iterate(float deltaTime /* millis */)
   Strip->Show();
 
   delay(10); // should depend on distance between pixels
+}
+
+/////////////////////////////////////
+// GRADIENTPLUGIN
+//
+
+GradientPlugin::GradientPlugin(NeoPixelStrip * strip, String & parameters)
+:Plugin(strip)
+{
+    _pixels = new uint32_t[strip->Length];
+
+    SetParameters(parameters);
+}
+
+GradientPlugin::~GradientPlugin()
+{
+    delete _pixels;
+}
+
+void GradientPlugin::SetParameters(String & parameters)
+{
+    char style = parameters[0];
+
+    float red[3];
+    float green[3];
+    float blue[3];
+
+    int i = parameters.indexOf(',', 0);
+    red[0] = parameters.substring(i+1).toInt();
+    i = parameters.indexOf(',', i+1);
+    green[0] = parameters.substring(i+1).toInt();
+    i = parameters.indexOf(',', i+1);
+    blue[0] = parameters.substring(i+1).toInt();
+
+    i = parameters.indexOf(',', i+1);
+    red[1] = parameters.substring(i+1).toInt();
+    i = parameters.indexOf(',', i+1);
+    green[1] = parameters.substring(i+1).toInt();
+    i = parameters.indexOf(',', i+1);
+    blue[1] = parameters.substring(i+1).toInt();
+
+    int length = Strip->Length-1;
+    float ratio;
+    float intermidiate;
+    float redDist = red[0]-red[1];
+    float greenDist = green[0]-green[1];
+    float blueDist = blue[0]-blue[1];
+
+    // Calculate the values of all the pixels in advance
+    for(int i = 0; i <= length; i++)
+    {
+      ratio = (float)i/((float)length);
+      switch(style)
+      {
+        case 'L': // Linear
+          ;
+          break;
+        case 'A': // ArcSine
+          // =(ARCSIN((($A1/37)-0,5)    *2)+  (PI()/2))       /       PI()
+          ratio = (asinf((ratio*2)-1)+HALF_PI)/PI;
+          break;
+        case 'S': // Sine
+          // =(SIN((($A1/37)-0,5)*PI())+1)/2
+          ratio = (sinf((ratio-0.5)*PI)+1)/2;
+          break;
+      }
+
+      red[2] = red[1]+(redDist*ratio);
+      /*if(red[2] < 0)
+        red[2] = 0;
+        if(red[2] > 255)
+          red[2] = 255;*/
+      green[2] = green[1]+(greenDist*ratio);
+      /*if(green[2] < 0)
+        green[2] = 0;
+        if(green[2] > 255)
+          green[2] = 255;*/
+      blue[2] = blue[1]+(blueDist*ratio);
+      /*if(blue[2] < 0)
+        blue[2] = 0;
+        if(blue[2] > 255)
+          blue[2] = 255;*/
+
+      _pixels[i] = Adafruit_NeoPixel::Color(red[2], green[2], blue[2]);
+    }
+}
+
+void GradientPlugin::Iterate(float deltaTime /* millis */)
+{
+    for(int i = 0; i < Strip->Length; i++)
+    {
+        Strip->SetPixelColor(i, _pixels[i]);
+    }
+
+    Strip->Show();
+
+    delay(1000.0);
 }

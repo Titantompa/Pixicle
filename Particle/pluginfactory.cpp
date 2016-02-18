@@ -38,6 +38,11 @@ Plugin * PluginFactory::CreatePlugin(String & config, NeoPixelStrip * strip)
         String parameters(config.substring(5));
         return new FirePlugin(strip, parameters);
     }
+    else if(config.startsWith("Gradient"))
+    {
+        String parameters(config.substring(9));
+        return new GradientPlugin(strip, parameters);
+    }
     else if(config.startsWith("Off"))
     {
         return new OffPlugin(strip);
