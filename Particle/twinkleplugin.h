@@ -3,6 +3,7 @@
 
 #include "plugin.h"
 #include "neopixelstrip.h"
+#include <vector>
 
 struct TwinkleEntity
 {
@@ -25,6 +26,8 @@ class TwinklePlugin : public Plugin
 
         TwinkleEntity * _twinkles;
 
+        std::vector<int> _availablePixels;
+
     public:
         TwinklePlugin(NeoPixelStrip * strip, String & parameters);
 
@@ -38,6 +41,10 @@ class TwinklePlugin : public Plugin
         // b = uint8_t blue component
         // sparkle = bit (0/1) if projectile should sparkle
         virtual void SetParameters(String & parameters);
+
+    private:
+        void GrabAPosition(TwinkleEntity * twinkle);
+        void ReleaseThePosition(TwinkleEntity * twinkle);
 };
 
 #endif // _TWINKLEPLUGIN_H

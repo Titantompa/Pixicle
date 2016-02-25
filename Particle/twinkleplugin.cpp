@@ -3,7 +3,6 @@
 
 #define PI 3.1415926535897932384626433832795
 
-
 /////////////////////////////////////
 // TWINKLEPLUGIN
 //
@@ -15,6 +14,18 @@ TwinklePlugin::TwinklePlugin(NeoPixelStrip * strip, String & parameters)
     SetParameters(parameters);
 }
 
+void TwinklePlugin::GrabAPosition(TwinkleEntity * twinkle)
+{
+  int position = random(0, _availablePixels.size());
+  twinkle->Position = _availablePixels[position];
+  _availablePixels.erase(_availablePixels.begin()+position);
+}
+
+void TwinklePlugin::ReleaseThePosition(TwinkleEntity * twinkle)
+{
+  _availablePixels.push_back(twinkle->Position);
+}
+
 void TwinklePlugin::SetParameters(String & parameters)
 {
     // parameters: "<count>,<duration>,<r>,<g>,<b>,<sparkle>"
@@ -22,8 +33,6 @@ void TwinklePlugin::SetParameters(String & parameters)
     _count = parameters.toInt();
     if(_count == 0)
         _count = 1;
-    if(_count > 50)
-        _count = 50;
     if(_count > Strip->Length)
         _count = Strip->Length;
 
@@ -41,6 +50,13 @@ void TwinklePlugin::SetParameters(String & parameters)
     i = parameters.indexOf(',', i+1);
     _sparkle = parameters.substring(i+1).toInt() == 1;
 
+    // Initialize pixel array
+    _availablePixels.clear();
+    for(int i = 0; i < Strip->Length; i++)
+    {
+        _availablePixels.push_back(i);
+    }
+
     // Allocate buffer
     if(_twinkles != NULL)
         delete _twinkles;
@@ -52,7 +68,7 @@ void TwinklePlugin::SetParameters(String & parameters)
     {
         _twinkles[i].StartMillis = startMillis;
         _twinkles[i].Duration = i*(_duration/_count);
-        _twinkles[i].Position = random(0, Strip->Length-1);
+        GrabAPosition(&_twinkles[i]);
         _twinkles[i].Seed = 1;
     }
 }
@@ -75,12 +91,14 @@ void TwinklePlugin::Iterate(float deltaTime /* millis */)
         if(age > _twinkles[i].Duration)
         {
             // Twinkle is bust, create a new one!
+
+            ReleaseThePosition(&_twinkles[i]);
+
             _twinkles[i].StartMillis = currentTime;
             _twinkles[i].Seed = random(333,6666); // So that they don't all blink synchronized
             _twinkles[i].Duration = (_duration*0.7)+(_duration*0.3*random(0,2))+0.00001; // To give diversity
 
-            // TODO: Find a unique position! :-)
-            _twinkles[i].Position = random(0, Strip->Length-1);
+            GrabAPosition(&_twinkles[i]);
 
             age = 0.0001;
         }
