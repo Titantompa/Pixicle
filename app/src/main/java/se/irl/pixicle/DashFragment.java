@@ -38,12 +38,19 @@ public class DashFragment extends PixicleConfigFragmentBase {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_dash, container, false);
 
-        ColorPicker colorPicker = (ColorPicker) view.findViewById(R.id.dash_picker);
-        ValueBar valueBar = (ValueBar) view.findViewById(R.id.dash_value_bar);
-        colorPicker.addValueBar(valueBar);
-        SaturationBar saturationBar = (SaturationBar) view.findViewById(R.id.dash_saturation_bar);
-        colorPicker.addSaturationBar(saturationBar);
-        colorPicker.setShowOldCenterColor(false);
+        ColorPicker foregroundColorPicker = (ColorPicker) view.findViewById(R.id.dash_foreground_picker);
+        ValueBar foregroundValueBar = (ValueBar) view.findViewById(R.id.dash_foreground_value_bar);
+        foregroundColorPicker.addValueBar(foregroundValueBar);
+        SaturationBar foregroundSaturationBar = (SaturationBar) view.findViewById(R.id.dash_foreground_saturation_bar);
+        foregroundColorPicker.addSaturationBar(foregroundSaturationBar);
+        foregroundColorPicker.setShowOldCenterColor(false);
+
+        ColorPicker backgroundColorPicker = (ColorPicker) view.findViewById(R.id.dash_background_picker);
+        ValueBar backgroundValueBar = (ValueBar) view.findViewById(R.id.dash_background_value_bar);
+        backgroundColorPicker.addValueBar(backgroundValueBar);
+        SaturationBar backgroundSaturationBar = (SaturationBar) view.findViewById(R.id.dash_background_saturation_bar);
+        backgroundColorPicker.addSaturationBar(backgroundSaturationBar);
+        backgroundColorPicker.setShowOldCenterColor(false);
 
         return view;
     }
@@ -53,18 +60,27 @@ public class DashFragment extends PixicleConfigFragmentBase {
         View view = getView();
         EditText lengthEdit = (EditText) view.findViewById(R.id.dash_length);
         EditText speedEdit = (EditText) view.findViewById(R.id.dash_speed);
-        ColorPicker colorPicker = (ColorPicker) view.findViewById(R.id.dash_picker);
+        ColorPicker foregroundColorPicker = (ColorPicker) view.findViewById(R.id.dash_foreground_picker);
+        ColorPicker backgroundColorPicker = (ColorPicker) view.findViewById(R.id.dash_background_picker);
 
-        int color = colorPicker.getColor();
-        Integer red = (color & 0x00ff0000)>>16;
-        Integer green = (color & 0x0000ff00)>>8;
-        Integer blue = color & 0x000000ff;
+        int foregroundColor = foregroundColorPicker.getColor();
+        Integer foregroundRed = (foregroundColor & 0x00ff0000) >> 16;
+        Integer foregroundGreen = (foregroundColor & 0x0000ff00) >> 8;
+        Integer foregroundBlue = foregroundColor & 0x000000ff;
+
+        int backgroundColor = backgroundColorPicker.getColor();
+        Integer backgroundRed = (backgroundColor & 0x00ff0000) >> 16;
+        Integer backgroundGreen = (backgroundColor & 0x0000ff00) >> 8;
+        Integer backgroundBlue = backgroundColor & 0x000000ff;
 
         return lengthEdit.getText() + "," +
-               speedEdit.getText() + "," +
-               red.toString() + "," +
-               green.toString() + "," +
-               blue.toString();
+                speedEdit.getText() + "," +
+                foregroundRed.toString() + "," +
+                foregroundGreen.toString() + "," +
+                foregroundBlue.toString() + "," +
+                backgroundRed.toString() + "," +
+                backgroundGreen.toString() + "," +
+                backgroundBlue.toString();
     }
 
     @Override

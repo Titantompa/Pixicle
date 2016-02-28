@@ -124,7 +124,6 @@ void SolidColorPlugin::Iterate(float deltaTime /* millis */)
     delay(1000.0);
 }
 
-
 /////////////////////////////////////
 // PROGRESSPLUGIN
 //
@@ -197,7 +196,15 @@ void DashPlugin::SetParameters(String & parameters)
     uint8_t green = parameters.substring(i+1).toInt();
     i = parameters.indexOf(',', i+1);
     uint8_t blue = parameters.substring(i+1).toInt();
-    _color = Strip->Color(red, green, blue);
+    _foregroundColor = Strip->Color(red, green, blue);
+
+    i = parameters.indexOf(',', i+1);
+    red = parameters.substring(i+1).toInt();
+    i = parameters.indexOf(',', i+1);
+    green = parameters.substring(i+1).toInt();
+    i = parameters.indexOf(',', i+1);
+    blue = parameters.substring(i+1).toInt();
+    _backgroundColor = Strip->Color(red, green, blue);
 }
 
 void DashPlugin::Iterate(float deltaTime /* millis */)
@@ -206,14 +213,12 @@ void DashPlugin::Iterate(float deltaTime /* millis */)
 
     int j = round(_currentPosition);
 
-    uint32_t white = Adafruit_NeoPixel::Color(255, 255, 255);
-
     for(int i=0; i < Strip->Length; i++)
     {
         if(((i+j)%(_width*2)) <= _width)
-            Strip->SetPixelColor(i, _color);
+            Strip->SetPixelColor(i, _foregroundColor);
         else
-            Strip->SetPixelColor(i, white);
+            Strip->SetPixelColor(i, _backgroundColor);
     }
 
     Strip->Show();
@@ -221,7 +226,6 @@ void DashPlugin::Iterate(float deltaTime /* millis */)
     // Don't go faster than the speed
     delay(_speed);
 }
-
 
 /////////////////////////////////////
 // JUGGLEPLUGIN

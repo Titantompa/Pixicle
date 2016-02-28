@@ -29,7 +29,7 @@
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="turn_off_pixicle">Turn Off</string>
 
-    <string name="dash_color">Dash color:</string>
+    <string name="dash_foreground_color">Foreground color:</string>
     <string name="from_color">From color:</string>
     <string name="to_color">To color:</string>
     <string name="completion_percentage">Percentage completion:</string>
@@ -56,9 +56,19 @@
     <string name="props_pin_number">Pin number:</string>
     <string name="title_properties_pixicle_config">Properties</string>
     <string name="transition_style_label">Transition style</string>
+    <string name="dash_background_color">Background color</string>
 
     <string-array name="props_transition_styles_array">
         <item>Linear</item>
         <item>Sine</item>
         <item>Arcsine</item>
-    </string-array></resources>
+    </string-array>
+
+    <string-array name="props_orientation_array">
+        <item>Linear</item>
+        <item>Helical</item>
+        <item>Spherical</item>
+        <item>Raster</item>
+    </string-array>
+
+</resources>

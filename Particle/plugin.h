@@ -48,7 +48,8 @@ class DashPlugin : public Plugin
     private:
         float _currentPosition;
         float _speed;
-        uint32_t _color;
+        uint32_t _foregroundColor;
+        uint32_t _backgroundColor;
         int _width;
 
     public:
@@ -56,12 +57,15 @@ class DashPlugin : public Plugin
 
         virtual void Iterate(float deltaTime /* millis */);
 
-        // parameters: "<w>,<s>,<r>,<g>,<b>"
+        // parameters: "<w>,<s>,<r>,<g>,<b>,<r>,<g>,<b>"
         // w = width of each bar (in neopixels)
         // s = int millis per shift
-        // r = uint8_t red component
-        // g = uint8_t green component
-        // b = uint8_t blue component
+        // r = uint8_t foreground red component
+        // g = uint8_t foreground green component
+        // b = uint8_t foreground blue component
+        // r = uint8_t background red component
+        // g = uint8_t background green component
+        // b = uint8_t background blue component
         virtual void SetParameters(String & parameters);
 };
 
